@@ -19,6 +19,8 @@ export interface LessonState {
   /** Inline validation message per parameter id. Cleared by the next valid change. */
   messages: Record<string, string>
   setParam(id: string, raw: ParamValue): SetParamResult
+  /** Restores every parameter to its declared default. */
+  reset(): void
 }
 
 export type LessonStore = StoreApi<LessonState>
@@ -88,6 +90,9 @@ export function createLessonStore(lesson: Lesson): LessonStore {
         }
         apply(id, stored, undefined)
         return { ok: true }
+      },
+      reset() {
+        set({ params: defaults, outputs: computeOutputs(lesson, defaults, dataset), messages: {} })
       },
     }
   })

@@ -182,13 +182,13 @@ return. Empty topics show "coming soon".
 
 ### Tests for User Story 3 (write first, they MUST fail)
 
-- [ ] T060 [P] [US3] Write `tests/unit/sim/lessonStoreReset.test.ts`: B-06 (`reset()` after several changes restores every default, including the curve choice) and B-07 (`reset()` at defaults is a no-op)
-- [ ] T061 [P] [US3] Write `tests/component/reset.test.tsx`: D-14 (reset after changes in each of the three lessons) and D-15 (reset at defaults)
+- [X] T060 [P] [US3] Write `tests/unit/sim/lessonStoreReset.test.ts`: B-06 (`reset()` after several changes restores every default, including the curve choice) and B-07 (`reset()` at defaults is a no-op)
+- [X] T061 [P] [US3] Write `tests/component/reset.test.tsx`: D-14 (reset after changes in each of the three lessons) and D-15 (reset at defaults)
 
 ### Implementation for User Story 3
 
-- [ ] T062 [US3] Add `reset()` to `src/sim/lessonStore.ts`: restores every parameter to its declared default and recomputes outputs. Makes T060 pass
-- [ ] T063 [US3] Add a "Reset" button to `src/ui/components/ControlPanel.tsx` calling `reset()` (it is a native `<button>` so it is keyboard operable), visible in all three lessons including Loss where parameters are chart handles. Makes T061 pass
+- [X] T062 [US3] Add `reset()` to `src/sim/lessonStore.ts`: restores every parameter to its declared default and recomputes outputs. Makes T060 pass
+- [X] T063 [US3] Add a "Reset" button to `src/ui/components/ControlPanel.tsx` calling `reset()` (it is a native `<button>` so it is keyboard operable), visible in all three lessons including Loss where parameters are chart handles. Makes T061 pass
 
 **Checkpoint**: T060 and T061 pass, and reset also works from the keyboard.
 

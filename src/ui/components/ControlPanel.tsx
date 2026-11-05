@@ -8,6 +8,7 @@ interface ControlPanelProps {
   params: Record<string, ParamValue>
   messages: Record<string, string>
   setParam: (id: string, raw: ParamValue) => SetParamResult
+  reset: () => void
 }
 
 function NumberControl({ p, value, message, setParam }: { p: NumberParameter; value: number; message?: string; setParam: ControlPanelProps['setParam'] }) {
@@ -78,8 +79,10 @@ function ChoiceControl({ p, value, setParam }: { p: ChoiceParameter; value: stri
 }
 
 /** Controls for every parameter. Parameters that are only changed on the chart are shown read-only. */
-export function ControlPanel({ lesson, params, messages, setParam }: ControlPanelProps) {
+export function ControlPanel({ lesson, params, messages, setParam, reset }: ControlPanelProps) {
   const hasHandleOnly = lesson.parameters.some((p) => p.type === 'number' && p.control === 'chart-handle')
+  // Remounting the number controls on reset also drops any text typed but not yet confirmed.
+  const [resets, setResets] = useState(0)
   return (
     <fieldset className="control-panel">
       <legend>Controls</legend>
@@ -95,8 +98,18 @@ export function ControlPanel({ lesson, params, messages, setParam }: ControlPane
             </div>
           )
         }
-        return <NumberControl key={p.id} p={p} value={params[p.id] as number} message={messages[p.id]} setParam={setParam} />
+        return <NumberControl key={`${p.id}-${resets}`} p={p} value={params[p.id] as number} message={messages[p.id]} setParam={setParam} />
       })}
+      <button
+        type="button"
+        className="reset-button"
+        onClick={() => {
+          reset()
+          setResets((n) => n + 1)
+        }}
+      >
+        Reset
+      </button>
       {hasHandleOnly && <p className="control-hint">Drag the handles on the chart. Or focus a handle and use the arrow keys (hold Shift for bigger steps).</p>}
     </fieldset>
   )

@@ -16,6 +16,7 @@ function LessonBody({ lesson }: { lesson: Lesson }) {
   const outputs = useStore(store, (s) => s.outputs)
   const messages = useStore(store, (s) => s.messages)
   const setParam = useStore(store, (s) => s.setParam)
+  const reset = useStore(store, (s) => s.reset)
   const view = useMemo(() => renderLesson(lesson, params, outputs), [lesson, params, outputs])
 
   return (
@@ -31,7 +32,7 @@ function LessonBody({ lesson }: { lesson: Lesson }) {
         <h2 id={`${lesson.id}-demo`}>Try it</h2>
         <div className="demo">
           <ChartPanel lesson={lesson} params={params} outputs={outputs} view={view} setParam={setParam} />
-          <ControlPanel lesson={lesson} params={params} messages={messages} setParam={setParam} />
+          <ControlPanel lesson={lesson} params={params} messages={messages} setParam={setParam} reset={reset} />
         </div>
       </section>
 

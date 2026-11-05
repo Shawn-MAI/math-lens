@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathlens.local/schemas/lesson.schema.json",
+  "title": "MathLens lesson",
+  "description": "Structure of a lesson.json file. Cross-field rules (bindings, template references, symbol coverage) are enforced by the content loader and listed in data-model.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "topic", "order", "title", "summary", "model", "chart", "parameters", "outputs", "formula", "workedExample", "chartSummary"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "topic": { "enum": ["foundations", "optimization", "models", "neural-networks"] },
+    "order": { "type": "integer", "minimum": 1 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 60 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 160 },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "bind": {
+          "type": "object",
+          "description": "Maps each model role to a number parameter id.",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "datasetId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "chart": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string" },
+        "options": { "type": "object" }
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "oneOf": [{ "$ref": "#/$defs/numberParameter" }, { "$ref": "#/$defs/choiceParameter" }] }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "label", "decimals"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string", "minLength": 1 },
+          "symbol": { "type": "string" },
+          "decimals": { "type": "integer", "minimum": 0, "maximum": 6 }
+        }
+      }
+    },
+    "formula": { "$ref": "#/$defs/variantFormula" },
+    "workedExample": { "$ref": "#/$defs/variantSteps" },
+    "chartSummary": { "$ref": "#/$defs/variantString" }
+  },
+  "$defs": {
+    "numberParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "label", "min", "max", "step", "default", "control"],
+      "properties": {
+        "type": { "const": "number" },
+        "id": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "symbol": { "type": "string" },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "step": { "type": "number", "exclusiveMinimum": 0 },
+        "default": { "type": "number" },
+        "control": { "enum": ["slider", "chart-handle", "both"] }
+      }
+    },
+    "choiceParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id", "label", "options", "default"],
+      "properties": {
+        "type": { "const": "choice" },
+        "id": { "type": "string", "pattern": "^[a-zA-Z][a-zA-Z0-9]*$" },
+        "label": { "type": "string", "minLength": 1 },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "label"],
+            "properties": {
+              "value": { "type": "string", "minLength": 1 },
+              "label": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "default": { "type": "string" }
+      }
+    },
+    "formula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["latex", "symbols"],
+      "properties": {
+        "latex": { "type": "string", "minLength": 1 },
+        "symbols": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["symbol", "meaning"],
+            "properties": {
+              "symbol": { "type": "string", "minLength": 1 },
+              "meaning": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "workedStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "latex"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "latex": { "type": "string", "minLength": 1 }
+      }
+    },
+    "variantFormula": {
+      "oneOf": [
+        { "$ref": "#/$defs/formula" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["variantBy", "variants"],
+          "properties": {
+            "variantBy": { "type": "string" },
+            "variants": { "type": "object", "additionalProperties": { "$ref": "#/$defs/formula" } }
+          }
+        }
+      ]
+    },
+    "variantSteps": {
+      "oneOf": [
+        { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/workedStep" } },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["variantBy", "variants"],
+          "properties": {
+            "variantBy": { "type": "string" },
+            "variants": {
+              "type": "object",
+              "additionalProperties": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/workedStep" } }
+            }
+          }
+        }
+      ]
+    },
+    "variantString": {
+      "oneOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["variantBy", "variants"],
+          "properties": {
+            "variantBy": { "type": "string" },
+            "variants": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } }
+          }
+        }
+      ]
+    }
+  }
+}

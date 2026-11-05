@@ -74,8 +74,16 @@ runs, using the installed Spec Kit git extension.
 - If automatic branch creation fails or the working tree has uncommitted changes, the agent
   MUST stop and tell the user instead of continuing. It MUST NOT fall back to working on `main`
   or silently create the branch by hand.
+- Auto-commit after analysis: when `/speckit-analyze` finishes with zero CRITICAL findings, the
+  agent MUST run `/speckit-git-commit` automatically, without asking, so the analyzed spec, plan
+  and tasks are committed on the feature branch before `/speckit-implement` starts. The commit
+  message MUST describe the change (for example `docs: analyze 001-lesson-framework-foundations`).
+  The agent MUST NOT run this commit on `main` or the default branch, and MUST NOT run it when any
+  CRITICAL finding exists; in that case it MUST report the findings and leave the working tree
+  unchanged. `/speckit-analyze` itself stays read-only: only the follow-up commit writes to git.
 
-Rationale: isolated branches keep `main` stable and make each feature reviewable on its own.
+Rationale: isolated branches keep `main` stable and make each feature reviewable on its own, and
+committing each analyzed state keeps the working tree clean for the next step.
 
 ## Technical Constraints
 
@@ -91,6 +99,8 @@ Rationale: isolated branches keep `main` stable and make each feature reviewable
 
 - Work follows the Spec Kit sequence: specify → plan → tasks → implement, each on the feature
   branch defined in Principle IX.
+- `/speckit-analyze` MUST be followed by an automatic `/speckit-git-commit` when it reports no
+  CRITICAL issues (Principle IX).
 - Test cases MUST be listed and approved before implementation (Principle V); tests MUST fail
   before the code that satisfies them is written.
 - Every lesson MUST pass these gates before merge: interactive control present and under
@@ -113,4 +123,4 @@ expanded guidance; PATCH for clarifications, wording or typo fixes.
 Compliance MUST be checked at the plan phase (Constitution Check) and again during pull-request
 review. Violations MUST be fixed or explicitly justified in the plan's complexity tracking.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

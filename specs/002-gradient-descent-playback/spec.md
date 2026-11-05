@@ -13,6 +13,7 @@
 ### Session 2026-11-05
 
 - Q: When a learner returns to an earlier step and presses Play without changing the learning rate, what should happen to the later recorded steps? → A: Replay existing steps; replace later steps only when the learning rate changes.
+- Q: How is the original future retained when a changed rate creates a replacement continuation? → A: Replace it in the active timeline, but retain the original branch and let the learner select and scrub it.
 - Q: For a selected step, which weight update should the inspection panel show? → A: Show the next update from the selected point, labeling unperformed updates as previews.
 - Q: Which views should the first 2D lesson provide? → A: A contour map only; a 3D surface is outside this feature.
 - Q: What should happen when a run reaches 1,000 training updates? → A: Stop at 1,000 updates and retain the complete run, including the starting state.
@@ -53,7 +54,8 @@ A learner drags a timeline scrubber to any earlier step. The chart, the marker a
 2. **Given** any step is shown, **When** the learner reads the update calculation, **Then** it uses the selected step's weight and gradient to show the learning rate and resulting next weight with real values, and the arithmetic is correct. If that update has not been performed, it is labelled as a preview.
 3. **Given** the learner steps forward from step 10 to step 11 and then backward to step 10, **When** they compare the two views of step 10, **Then** every displayed value is identical.
 4. **Given** the learner scrubs back to step 3 without changing the learning rate, **When** they press Play or Step forward, **Then** the recorded subsequent steps are replayed unchanged.
-5. **Given** the learner selects an earlier step and changes the learning rate, **When** training continues, **Then** subsequent steps are replaced by steps computed from that point using the new rate.
+5. **Given** the learner selects an earlier step and changes the learning rate, **When** the next update succeeds, **Then** the active timeline follows the new continuation while the original branch remains available for selection and scrubbing.
+6. **Given** a recorded future and a pending changed rate, **When** the attempted update diverges, **Then** no new branch is created and the original future remains intact.
 
 ---
 
@@ -156,7 +158,7 @@ The learner opens the 2D lesson. A loss surface is shown as a contour map. The l
 - **FR-007**: The system MUST store and allow scrubbing of the starting state and all 1,000 resulting states of a run of 1,000 updates, within the response time in SC-002.
 - **FR-008**: Learners MUST be able to drag a timeline scrubber to any stored step, and also move it with the keyboard.
 - **FR-009**: Stepping backward MUST restore the exact earlier state: the shown parameters, loss, gradient and update are identical to what was shown at that step the first time.
-- **FR-010**: When the learner plays or steps forward from an earlier step without changing the learning rate, the system MUST replay the recorded subsequent steps unchanged. If the learner changes the learning rate at an earlier step, continuing MUST discard the later steps and compute a new continuation from that point.
+- **FR-010**: When the learner plays or steps forward from an earlier step without changing the learning rate, the system MUST replay the recorded subsequent steps unchanged. If the learner changes the learning rate at an earlier step, the next successful update MUST create and select a new continuation from that point. The prior branch MUST remain available through a keyboard-operable branch selector and its entire history MUST remain scrubbable. A failed update MUST leave the prior branch selected and unchanged.
 
 **Inspection**
 
@@ -191,19 +193,19 @@ The learner opens the 2D lesson. A loss surface is shown as a contour map. The l
 - **FR-027**: The system MUST detect when a step produces a value that is not a finite number, MUST stop playback, and MUST show a clear message that the run has diverged and at which step.
 - **FR-028**: After divergence, the earlier valid steps MUST stay available for scrubbing, and no non-finite value MUST be drawn or printed.
 - **FR-029**: The system MUST detect a stationary point (the gradient is effectively zero), stop and tell the learner rather than step forever. It MUST NOT identify a stationary point as a minimum solely because the gradient is zero.
-- **FR-030**: A run MUST stop after 1,000 updates and tell the learner that the limit has been reached. The starting state and all 1,000 resulting states MUST remain available.
+- **FR-030**: An active branch MUST stop after 1,000 updates and tell the learner that the limit has been reached. Its starting state and all 1,000 resulting states MUST remain available; an earlier state can still start a separate continuation.
 
 **Lessons and framework**
 
 - **FR-031**: The feature MUST add these lessons to the lesson list, under "Optimization": gradient descent in 1D, gradient descent on a non-convex curve, and gradient descent in 2D.
 - **FR-032**: Lessons MUST follow the existing order of intuition, interactive demo, formula and worked example, and the worked example MUST use the values of the selected step.
-- **FR-033**: Adding another iterative algorithm later MUST be possible by describing it in lesson content, without changing the playback system (the playback controls, history and scrubber MUST not be specific to gradient descent).
+- **FR-033**: Adding a lesson using a registered iterative algorithm and landscape MUST require only lesson content. Adding a new algorithm MAY require a core adapter and registry entry, but MUST NOT require changes to the playback controls, history or scrubber.
 - **FR-034**: The feature MUST work at 1024 px width and above, in both light and dark themes, and keep the keyboard and text-alternative behaviour of the existing lessons.
 - **FR-035**: A refresh or direct link MUST start the lesson at its defaults (no saved progress), as in the existing lessons.
 
 ### Key Entities
 
-- **Training run**: One attempt of an iterative algorithm. It has a starting point, a current learning rate, and a list of steps; the rate can change between updates.
+- **Training run**: One attempt of an iterative algorithm. It has a starting point, a current learning rate, and one or more selectable branches of steps; the rate can change between updates. Each branch has at most 1,000 updates. Reset or changing the start begins a new run and clears its branches.
 - **Step**: One entry in the history. It records the step number, the parameters at that point, the loss and the gradient; a performed outgoing transition also records its learning rate and resulting update.
 - **Playback state**: Whether the run is playing, paused, stopped at a stationary point or diverged, the selected step, and the speed.
 - **Loss landscape**: The function being minimised, in 1D (curve) or 2D (surface), including the non-convex curve.
@@ -227,7 +229,7 @@ The learner opens the 2D lesson. A loss surface is shown as a contour map. The l
 
 - The learners are the same self-learners with high-school maths as in the first feature.
 - The default speeds are slow, normal and fast; their exact rates will be set during planning.
-- A run holds at most 1,000 updates, plus its starting state.
+- Each branch holds at most 1,000 updates, plus its starting state; retained sibling branches are not counted against that limit.
 - "Good" and "too small" and "too large" learning rates are chosen per lesson, based on the lesson's loss function.
 - The 1D lesson uses a simple convex curve; the non-convex lesson uses a curve with two valleys of different depth.
 - The 2D lesson uses one smooth bowl-shaped surface by default; other surfaces can be added later as content.

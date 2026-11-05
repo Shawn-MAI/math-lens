@@ -66,16 +66,19 @@ clipped/off-screen indication with finite numeric values rather than changing th
 
 **Decision**: Store each finite snapshot and performed transition immutably; replay stored
 transitions until the tip, with a pending rate edit branching on the next successful advancement.
+Retain the original branch and expose a keyboard-operable selector so every branch remains
+scrubbable; immutable prefixes may be shared. Reset or a start change starts a new run.
 Use one per-lesson Zustand vanilla store and a cancellable single-shot timer scheduler, with slow
 1 step/second, normal 2 steps/second and fast 4 steps/second. No batched skipped steps. Pause on
 timeline drag/keyboard scrub and start-point edits, not on rate/preset or speed changes. See
 [playback contract](./contracts/playback.md) for precise operations and error rules.
 
-**Rationale**: Values and recorded rates survive inspection, an edit does not erase future data
-until an actual successful branch, and stopping timers on unmount prevents hidden training.
+**Rationale**: Values and recorded rates survive inspection, a successful branch does not erase
+the earlier future, and stopping timers on unmount prevents hidden training.
 
 **Alternatives considered**: Recompute on backward movement loses exact prior transitions and
-potentially changes floating-point results. A separate branch tree adds unrequested complexity.
+potentially changes floating-point results. Discarding earlier branches conflicts with the
+constitution's full-history requirement.
 
 ## 4. Contours, scaling and 1,001-state performance
 
@@ -87,7 +90,8 @@ as SVG paths, with the selected cursor and explicit off-screen indication for ou
 weights. Derive line/curve samples from the core. Clamp only drawing to the viewport, never data;
 use overflow-safe scaling and scientific axis formatting for extreme finite loss values.
 
-Use retained arrays of at most 1,001 states, selectors that avoid unrelated rerenders, memoized
+Use retained branch histories of at most 1,001 states each, shared immutable prefixes where useful,
+selectors that avoid unrelated rerenders, memoized
 static geometry and batched DOM updates. Profile before deciding whether a worker is needed. If
 sampling, contours or computation blocks interaction, move the measured heavy portion to a worker;
 use serializable messages with request ids/revisions, ignore stale replies on reset/branch/unmount,

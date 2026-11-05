@@ -10,7 +10,8 @@ Extend the existing static lesson framework with three Optimization lessons: a c
 an asymmetric non-convex 1D curve, and a 2D contour map. A reusable playback engine records the
 actual gradient descent states and transitions, replays or branches them according to the learner's
 actions, and drives the charts, numerical inspection and worked example from the same selected
-snapshot. A run retains its initial state and up to 1,000 updates. See [research.md](./research.md),
+snapshot. A run retains every selectable branch; each branch includes its initial state and up to
+1,000 updates. See [research.md](./research.md),
 [data-model.md](./data-model.md), and [contracts](./contracts/).
 
 ## Technical Context
@@ -40,7 +41,7 @@ on real desktop and tablet-class browsers, not inferred from timer delays.
 checks before accepting or plotting data; keyboard and chart text alternatives; no background
 playback after navigation; worker if measurement shows main-thread computation blocks the UI.
 
-**Scale/Scope**: Three new lessons, up to 1,000 updates plus initial state per run; 1D and 2D
+**Scale/Scope**: Three new lessons, up to 1,000 updates plus initial state per branch; 1D and 2D
 weights, with contour only. More algorithms, 3D, persistence and data-fitting remain out of scope.
 
 ## Constitution Check
@@ -50,7 +51,7 @@ weights, with contour only. More algorithms, 3D, persistence and data-fitting re
 | Principle | Status | Design and verification |
 |-----------|--------|-------------------------|
 | I. Learn by Manipulation | PASS | Start, rate, speed and timeline controls update selected-state views; benchmark actual input-to-render latency under 100 ms. |
-| II. Training Is Visible | PASS | Play/pause, forward/back, reset, speed and timeline expose full state and transition history; replay and branching are specified in the playback contract. |
+| II. Training Is Visible | PASS | Play/pause, forward/back, reset, speed and timeline expose full state and transition history; prior branches remain selectable and scrubbable as specified in the playback contract. |
 | III. Math Correctness First | PASS | Pure `src/core` evaluation, gradients and updates; test hand/NumPy references and overflow handling; charts sample real landscapes. |
 | IV. Intuition Before Formalism | PASS | Preserve intuition → demo → formula → current-step worked example and explain all symbols. |
 | V. Test-First Quality | GATE | Create and present the test-case inventory for user approval before implementing; TDD each task. Cover every new core function and parameter-to-chart behavior. |

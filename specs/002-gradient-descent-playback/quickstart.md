@@ -28,7 +28,9 @@ must reproduce the recorded values exactly.
 
 After at least 10 updates, seek to step 3 and play without editing the rate: later states replay
 unchanged. Seek to 3 again, change the rate, and confirm the old recorded transition and separate
-preview remain visible until advancing; then verify the future is replaced by the new computation.
+preview remain visible until advancing; then verify the active future follows the new computation.
+Use the branch selector to return to the original branch, scrub its unchanged future and switch
+back to the new branch. Check that selecting a branch pauses playback.
 Select presets while playing and paused; selection and play/pause state must not reset.
 
 ## 2. Presets and local minima
@@ -41,10 +43,11 @@ Use both pointer drag and keyboard/input to set starts; in 2D check both coordin
 
 ## 3. Limits, divergence and recovery
 
-Set a non-stationary start and rate 0. Run 1,000 updates with a test-clock-assisted component test
+Set the 1D default start `-4` and rate `0.0005`. Run 1,000 updates with a test-clock-assisted component test
 or a browser test harness using the real store and controls; verify all 1,001 states exist,
-scrubbing reaches indices 0 and 1,000, no-progress and limit messages are clear, and backward
-restores the recorded values. Check terminal behavior and reset. Do not use fabricated history to
+scrub and navigate forward and backward across every index, and compare the displayed values with
+their first display. Verify the limit message, terminal behavior and reset; separately check the
+zero-rate no-progress message. Do not use fabricated history to
 claim the performance target; generated test history must come from the real algorithm.
 
 For each lesson, use its large preset and advance until non-finite arithmetic is attempted; a

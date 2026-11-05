@@ -20,12 +20,13 @@ their present content and default behavior.
   numeric inspector, worked example and text summaries use the same selected snapshot.
 - Show 1D loss curve or a 2D contour map, the path through the selected step and an explicit
   current marker. A side-by-side loss-vs-step chart shows the recorded run and selected cursor;
-  recorded future is still visible until a successful branch replaces it.
+  recorded future is still visible until a successful branch replaces it in the active view. A
+  labelled keyboard-operable branch selector retains access to every prior branch and its timeline.
 - Chart surface/path samples are calculated from the declared landscape and recorded history.
   When finite data leaves the view, clip the drawing and provide a textual off-screen indication;
   never draw a clamped position as if it were the actual weight.
 - Provide keyboard-operable controls for start, rate, preset, play/pause, forward, backward,
-  reset, speed and timeline. On 2D, pointer drag sets both start coordinates; separate named input
+  reset, speed, branch selection and timeline. On 2D, pointer drag sets both start coordinates; separate named input
   controls make each coordinate keyboard accessible. Pointer, touch and keyboard use the same
   validation rules. Controls expose labels, ranges, values and inline validation messages.
 - A selected snapshot displays index, weights, loss and gradient. Recorded outgoing updates use

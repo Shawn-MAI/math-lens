@@ -1,0 +1,37 @@
+{
+  "id": "loss",
+  "topic": "foundations",
+  "order": 2,
+  "title": "Loss",
+  "summary": "Drag a line over data points and see how far off it is.",
+  "model": { "id": "line-loss", "bind": { "slope": "steepness", "intercept": "height" } },
+  "datasetId": "loss-3",
+  "chart": { "type": "line-fit", "options": { "slopeParam": "steepness", "interceptParam": "height", "handles": true } },
+  "parameters": [
+    { "type": "number", "id": "steepness", "label": "Steepness of the line", "min": -3, "max": 3, "step": 0.1, "default": 1, "control": "chart-handle" },
+    { "type": "number", "id": "height", "label": "Height of the line", "min": -5, "max": 5, "step": 0.1, "default": 0, "control": "chart-handle" }
+  ],
+  "outputs": [
+    { "key": "mse", "label": "Loss (mean squared error)", "symbol": "MSE", "decimals": 3 },
+    { "key": "predictions", "label": "Predictions", "decimals": 2 },
+    { "key": "errors", "label": "Errors", "decimals": 2 },
+    { "key": "squaredErrors", "label": "Squared errors", "decimals": 2 }
+  ],
+  "formula": {
+    "latex": "\\text{MSE} = \\frac{1}{n} \\sum_{i=1}^{n} (\\hat{y}_i - y_i)^2",
+    "symbols": [
+      { "symbol": "MSE", "meaning": "the mean squared error, our loss: one number for how far off the line is" },
+      { "symbol": "n", "meaning": "the number of data points" },
+      { "symbol": "\\sum", "meaning": "add up the terms that follow, one for each point from 1 to n" },
+      { "symbol": "i", "meaning": "the number of one data point" },
+      { "symbol": "\\hat{y}_i", "meaning": "the prediction: where the line is at point i" },
+      { "symbol": "y_i", "meaning": "the actual value of point i" }
+    ]
+  },
+  "workedExample": [
+    { "text": "Read the line's prediction at each point.", "latex": "\\hat{y} = {{predictions[]|, }}" },
+    { "text": "Subtract the actual values ({{dataY[]|, }}) from the predictions to get the errors.", "latex": "\\hat{y} - y = {{errors[]|, }}" },
+    { "text": "Square each error, so that negative and positive errors both count, then add them up and divide by the number of points, n = {{n}}.", "latex": "\\text{MSE} = \\frac{ {{squaredErrors[]| + }} }{ {{n}} } = {{mse}}" }
+  ],
+  "chartSummary": "Line with steepness {{steepness}} and height {{height}} over {{n}} points. Errors: {{errors[]|, }}. Loss (MSE) is {{mse}}."
+}

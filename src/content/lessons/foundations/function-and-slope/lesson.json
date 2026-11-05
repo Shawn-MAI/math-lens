@@ -1,0 +1,76 @@
+{
+  "id": "function-and-slope",
+  "topic": "foundations",
+  "order": 1,
+  "title": "Function and slope",
+  "summary": "Move a point along a curve and see how steep the curve is there.",
+  "model": { "id": "slope-of-curve", "bind": { "x": "x" } },
+  "chart": { "type": "curve-tangent", "options": { "xParam": "x" } },
+  "parameters": [
+    { "type": "number", "id": "x", "label": "Point position", "symbol": "x", "min": -3, "max": 3, "step": 0.1, "default": 1, "control": "both" },
+    {
+      "type": "choice",
+      "id": "curve",
+      "label": "Curve",
+      "options": [
+        { "value": "x2", "label": "x²" },
+        { "value": "x3", "label": "x³" },
+        { "value": "sin", "label": "sin x" }
+      ],
+      "default": "x2"
+    }
+  ],
+  "outputs": [
+    { "key": "y", "label": "Height of the curve", "symbol": "f(x)", "decimals": 2 },
+    { "key": "slope", "label": "Slope", "symbol": "f'(x)", "decimals": 1 }
+  ],
+  "formula": {
+    "variantBy": "curve",
+    "variants": {
+      "x2": {
+        "latex": "f(x) = x^2 \\quad\\Rightarrow\\quad f'(x) = 2x",
+        "symbols": [
+          { "symbol": "f(x)", "meaning": "the height of the curve at position x" },
+          { "symbol": "f'(x)", "meaning": "the slope of the curve at x: how steeply it rises (positive) or falls (negative)" },
+          { "symbol": "x", "meaning": "the position of the point along the horizontal axis" }
+        ]
+      },
+      "x3": {
+        "latex": "f(x) = x^3 \\quad\\Rightarrow\\quad f'(x) = 3x^2",
+        "symbols": [
+          { "symbol": "f(x)", "meaning": "the height of the curve at position x" },
+          { "symbol": "f'(x)", "meaning": "the slope of the curve at x: how steeply it rises (positive) or falls (negative)" },
+          { "symbol": "x", "meaning": "the position of the point along the horizontal axis" }
+        ]
+      },
+      "sin": {
+        "latex": "f(x) = \\sin x \\quad\\Rightarrow\\quad f'(x) = \\cos x",
+        "symbols": [
+          { "symbol": "f(x)", "meaning": "the height of the curve at position x" },
+          { "symbol": "f'(x)", "meaning": "the slope of the curve at x: how steeply it rises (positive) or falls (negative)" },
+          { "symbol": "x", "meaning": "the position of the point along the horizontal axis, in radians" },
+          { "symbol": "\\sin x", "meaning": "the sine of x, a wave that repeats and stays between -1 and 1" },
+          { "symbol": "\\cos x", "meaning": "the cosine of x, the same wave shifted along; it gives the slope of the sine wave" }
+        ]
+      }
+    }
+  },
+  "workedExample": {
+    "variantBy": "curve",
+    "variants": {
+      "x2": [
+        { "text": "The slope rule for the curve y = x² is:", "latex": "f'(x) = 2x" },
+        { "text": "Put the current x into the rule. The slope is rounded to one decimal place:", "latex": "f'({{x}}) = 2 \\cdot {{x|paren}} = {{slope}}" }
+      ],
+      "x3": [
+        { "text": "The slope rule for the curve y = x³ is:", "latex": "f'(x) = 3x^2" },
+        { "text": "Put the current x into the rule. The slope is rounded to one decimal place:", "latex": "f'({{x}}) = 3 \\cdot {{x|paren}}^2 = {{slope}}" }
+      ],
+      "sin": [
+        { "text": "The slope rule for the curve y = sin x is:", "latex": "f'(x) = \\cos x" },
+        { "text": "Put the current x (in radians) into the rule. The slope is rounded to one decimal place:", "latex": "f'({{x}}) = \\cos({{x}}) = {{slope}}" }
+      ]
+    }
+  },
+  "chartSummary": "Curve y = {{curve}}. At x = {{x}} the point is at y = {{y}} and the slope is {{slope}}."
+}

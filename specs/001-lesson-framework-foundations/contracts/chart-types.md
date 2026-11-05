@@ -12,6 +12,9 @@ interface ChartProps {
   options: Record<string, unknown>;          // from lesson.chart.options, validated per chart type
   setParam: (id: string, raw: number | string) => { ok: boolean; message?: string };
   parameters: Parameter[];                   // ranges and steps, for handle limits and ARIA values
+  decimals: Record<string, number>;          // decimals per output key, from lesson.outputs
+  ariaLabel: string;                         // accessible name of the chart: "<lesson title> chart"
+  describedBy: string;                       // id of the visible text summary
 }
 ```
 
@@ -23,6 +26,8 @@ Common rules for every chart type:
   `aria-valuetext` and `aria-label`. Arrow keys change the value by one step. Shift plus an arrow changes it by
   ten steps. Pointer movement is converted to a value and sent through `setParam`, so snapping and clamping are
   the same as for sliders.
+- Handles are drawn in a second SVG layered over the drawing (the overlay), not inside the `role="img"` SVG,
+  because interactive elements must not be nested inside an image role.
 - A visible focus ring is drawn on handles. Handles have a hit area of at least 24 px.
 - Colours come from `palette.ts` (Okabe-Ito) and the theme tokens. Meaning is never carried by colour alone: line
   styles (solid, dashed) and text labels are used as well.

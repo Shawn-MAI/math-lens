@@ -1,0 +1,42 @@
+{
+  "id": "weight-and-bias",
+  "topic": "foundations",
+  "order": 3,
+  "title": "Weight and bias",
+  "summary": "Change the weight and bias of a line and watch the loss respond.",
+  "model": { "id": "line-loss", "bind": { "slope": "w", "intercept": "b" } },
+  "datasetId": "weight-bias-4",
+  "chart": { "type": "line-fit", "options": { "slopeParam": "w", "interceptParam": "b", "handles": false } },
+  "parameters": [
+    { "type": "number", "id": "w", "label": "Weight", "symbol": "w", "min": -3, "max": 3, "step": 0.1, "default": 1, "control": "slider" },
+    { "type": "number", "id": "b", "label": "Bias", "symbol": "b", "min": -5, "max": 5, "step": 0.1, "default": 0, "control": "slider" }
+  ],
+  "outputs": [
+    { "key": "mse", "label": "Loss (mean squared error)", "symbol": "MSE", "decimals": 3 },
+    { "key": "predictions", "label": "Predictions", "decimals": 2 },
+    { "key": "errors", "label": "Errors", "decimals": 2 },
+    { "key": "squaredErrors", "label": "Squared errors", "decimals": 2 }
+  ],
+  "formula": {
+    "latex": "\\hat{y} = w \\cdot x + b \\qquad \\text{MSE} = \\frac{1}{n} \\sum_{i=1}^{n} (\\hat{y}_i - y_i)^2",
+    "symbols": [
+      { "symbol": "\\hat{y}", "meaning": "the prediction of the line" },
+      { "symbol": "w", "meaning": "the weight: how steep the line is, or how strongly x pushes the prediction" },
+      { "symbol": "x", "meaning": "the input value" },
+      { "symbol": "b", "meaning": "the bias: the height of the line at x = 0, which moves the whole line up or down" },
+      { "symbol": "MSE", "meaning": "the mean squared error, our loss" },
+      { "symbol": "n", "meaning": "the number of data points" },
+      { "symbol": "\\sum", "meaning": "add up the terms that follow, one for each point from 1 to n" },
+      { "symbol": "i", "meaning": "the number of one data point" },
+      { "symbol": "\\hat{y}_i", "meaning": "the prediction for point i" },
+      { "symbol": "y_i", "meaning": "the actual value of point i" }
+    ]
+  },
+  "workedExample": [
+    { "text": "The line with the current weight w = {{w}} and bias b = {{b}} is:", "latex": "\\hat{y} = {{w}} \\cdot x + {{b|paren}}" },
+    { "text": "Predict each point (x = {{dataX[]|, }}).", "latex": "\\hat{y} = {{predictions[]|, }}" },
+    { "text": "Subtract the actual values ({{dataY[]|, }}) to get the errors.", "latex": "\\hat{y} - y = {{errors[]|, }}" },
+    { "text": "Square the errors, add them up and divide by the number of points, n = {{n}}.", "latex": "\\text{MSE} = \\frac{ {{squaredErrors[]| + }} }{ {{n}} } = {{mse}}" }
+  ],
+  "chartSummary": "Line y = {{w}}x + {{b|paren}} over {{n}} points. Errors: {{errors[]|, }}. Loss (MSE) is {{mse}}."
+}

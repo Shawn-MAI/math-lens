@@ -1,12 +1,5 @@
-import { HashRouter, Route, Routes } from 'react-router-dom'
-
-export function AppRoutes() {
-  return (
-    <Routes>
-      <Route path="*" element={<p>MathLens</p>} />
-    </Routes>
-  )
-}
+import { HashRouter } from 'react-router-dom'
+import { AppRoutes } from './routes'
 
 export function App() {
   return (

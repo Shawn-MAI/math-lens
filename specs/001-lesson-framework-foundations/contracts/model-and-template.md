@@ -9,6 +9,7 @@ Two small contracts connect lesson content to the engine: the **model contract**
 interface Model {
   id: string;
   roles: string[];            // numeric inputs the lesson must bind to number parameters
+  choiceInputs: string[];     // choice inputs the lesson must bind to choice parameters
   needsDataset: boolean;
   outputKeys: string[];       // every key compute() returns
   compute(

@@ -97,55 +97,55 @@ the same numbers and ends in the displayed MSE.
 
 ### Tests for User Story 1 (write first, they MUST fail)
 
-- [ ] T022 [P] [US1] Write `tests/unit/core/curves.test.ts`: A2-01 to A2-13 (f and exact derivative for x², x³, sin x at the listed values, cross-check against `tests/helpers/numericDerivative.ts`, unknown curve id, non-finite x)
-- [ ] T023 [P] [US1] Write `tests/unit/core/linear.test.ts` (A3-01) and `tests/unit/core/loss.test.ts` (A3-02 to A3-16: hand values for both datasets, perfect fit, single point, empty dataset throws, mismatched lengths throw, 1e8 and 1e-8 magnitudes, error = prediction − actual, NumPy reference fixture from T006 within `1e-9`)
-- [ ] T024 [P] [US1] Write `tests/unit/core/models.test.ts`: A4-01 to A4-11 (`slope-of-curve` and `line-loss` outputs against hand values, sample arrays of 201 points over -3..3, tangent passes through the point, unknown curve choice throws, `outputKeys` match exactly, `compute` is pure)
-- [ ] T025 [P] [US1] Write `tests/unit/sim/lessonStore.test.ts`: B-01 to B-05, B-08 to B-11, B-13 (defaults on creation, `setParam` snapping to 0.1, clamping, rejecting `NaN` and non-numeric text, independent stores per lesson open, choice change re-validates `x`, 1000 random valid calls, 1000 calls timing)
-- [ ] T026 [P] [US1] Write `tests/unit/content/lessons.test.ts`: C-01 to C-13 and C-15 (every `lesson.json` validates, ids and topics match folders, model bindings, output keys, ranges and defaults on the step grid, chart contract, symbols covered by the formula, `intuition.md` non-empty, templates resolve at default/min/max, worked example final value equals displayed output at 3 settings per lesson, KaTeX parses with `throwOnError: true`, datasets valid, chart-handle lessons use a chart that exposes handles, Loss lesson does not use "w" or "b")
-- [ ] T027 [P] [US1] Write `tests/component/slopeLesson.test.tsx`: D-04, D-05, D-06 (x = 1.5 on x² gives handle value 1.5, slope readout `3.0`, worked example with substituted values ending in 3.0; choosing x³ then sin x changes the curve path, formula, symbols and worked example; x = 0 on x² gives slope `0.0` and a horizontal tangent)
-- [ ] T028 [P] [US1] Write `tests/component/lossLesson.test.tsx`: D-07, D-08, D-09, D-10 (arrow key on the height handle changes it by 0.1 and updates errors and MSE, Shift + arrow on the slope handle changes it by 1.0, pointer drag follows the pointer snapped to 0.1, default view shows error labels -1.00, -2.00, -2.00 and loss 3.000, with no "w" or "b" shown)
-- [ ] T029 [P] [US1] Write `tests/component/weightBiasLesson.test.tsx`: D-11, D-12, D-13 (sliders w = 2.0, b = 1.0 update line, errors, MSE and worked example; typing `9` clamps to 3.0 and shows "Enter a number from -3.0 to 3.0"; typing `abc` keeps the previous value and shows the same message)
-- [ ] T030 [P] [US1] Write `tests/component/lessonLayout.test.tsx` (D-03: intuition, then demo with controls, then formula, then worked example) and `tests/component/updateTiming.test.tsx` (D-25 under 100 ms from `fireEvent.change` to updated DOM, D-26 no debounce on the control-to-chart path, D-27 rapid 50 changes end in the final value)
+- [X] T022 [P] [US1] Write `tests/unit/core/curves.test.ts`: A2-01 to A2-13 (f and exact derivative for x², x³, sin x at the listed values, cross-check against `tests/helpers/numericDerivative.ts`, unknown curve id, non-finite x)
+- [X] T023 [P] [US1] Write `tests/unit/core/linear.test.ts` (A3-01) and `tests/unit/core/loss.test.ts` (A3-02 to A3-16: hand values for both datasets, perfect fit, single point, empty dataset throws, mismatched lengths throw, 1e8 and 1e-8 magnitudes, error = prediction − actual, NumPy reference fixture from T006 within `1e-9`)
+- [X] T024 [P] [US1] Write `tests/unit/core/models.test.ts`: A4-01 to A4-11 (`slope-of-curve` and `line-loss` outputs against hand values, sample arrays of 201 points over -3..3, tangent passes through the point, unknown curve choice throws, `outputKeys` match exactly, `compute` is pure)
+- [X] T025 [P] [US1] Write `tests/unit/sim/lessonStore.test.ts`: B-01 to B-05, B-08 to B-11, B-13 (defaults on creation, `setParam` snapping to 0.1, clamping, rejecting `NaN` and non-numeric text, independent stores per lesson open, choice change re-validates `x`, 1000 random valid calls, 1000 calls timing)
+- [X] T026 [P] [US1] Write `tests/unit/content/lessons.test.ts`: C-01 to C-13 and C-15 (every `lesson.json` validates, ids and topics match folders, model bindings, output keys, ranges and defaults on the step grid, chart contract, symbols covered by the formula, `intuition.md` non-empty, templates resolve at default/min/max, worked example final value equals displayed output at 3 settings per lesson, KaTeX parses with `throwOnError: true`, datasets valid, chart-handle lessons use a chart that exposes handles, Loss lesson does not use "w" or "b")
+- [X] T027 [P] [US1] Write `tests/component/slopeLesson.test.tsx`: D-04, D-05, D-06 (x = 1.5 on x² gives handle value 1.5, slope readout `3.0`, worked example with substituted values ending in 3.0; choosing x³ then sin x changes the curve path, formula, symbols and worked example; x = 0 on x² gives slope `0.0` and a horizontal tangent)
+- [X] T028 [P] [US1] Write `tests/component/lossLesson.test.tsx`: D-07, D-08, D-09, D-10 (arrow key on the height handle changes it by 0.1 and updates errors and MSE, Shift + arrow on the slope handle changes it by 1.0, pointer drag follows the pointer snapped to 0.1, default view shows error labels -1.00, -2.00, -2.00 and loss 3.000, with no "w" or "b" shown)
+- [X] T029 [P] [US1] Write `tests/component/weightBiasLesson.test.tsx`: D-11, D-12, D-13 (sliders w = 2.0, b = 1.0 update line, errors, MSE and worked example; typing `9` clamps to 3.0 and shows "Enter a number from -3.0 to 3.0"; typing `abc` keeps the previous value and shows the same message)
+- [X] T030 [P] [US1] Write `tests/component/lessonLayout.test.tsx` (D-03: intuition, then demo with controls, then formula, then worked example) and `tests/component/updateTiming.test.tsx` (D-25 under 100 ms from `fireEvent.change` to updated DOM, D-26 no debounce on the control-to-chart path, D-27 rapid 50 changes end in the final value)
 
 ### Implementation for User Story 1
 
 **Core (pure TypeScript, no UI imports)**
 
-- [ ] T031 [P] [US1] Create `src/core/curves.ts`: `f(curveId, x)` and `df(curveId, x)` for `x2` (2x), `x3` (3x²), `sin` (cos x), unknown id throws, non-finite x throws
-- [ ] T032 [P] [US1] Create `src/core/linear.ts`: `predict(slope, intercept, x) = slope * x + intercept`
-- [ ] T033 [US1] Create `src/core/loss.ts`: `residuals` (prediction − actual), `squaredErrors`, `mse = sum(squaredErrors) / n` using the compensated `sum`. Empty dataset and mismatched lengths throw. Depends on T012, T032
-- [ ] T034 [P] [US1] Create `src/core/models/slopeOfCurve.ts`: role `x`, choice input `curve`; outputs `y`, `slope`, `tangentIntercept`, `curveX[]`, `curveY[]` (201 samples over -3..3), `tangentX[]`, `tangentY[]`. Slope comes from the exact rule, not from nearby points
-- [ ] T035 [US1] Create `src/core/models/lineLoss.ts`: roles `slope` and `intercept`; outputs `n`, `predictions[]`, `errors[]`, `squaredErrors[]`, `mse`, `lineX[]`, `lineY[]`. Depends on T032, T033
-- [ ] T036 [US1] Create `src/core/index.ts` exporting the public core API, then register both models in `src/sim/models.ts`. Depends on T034, T035. Makes T022, T023, T024 pass
+- [X] T031 [P] [US1] Create `src/core/curves.ts`: `f(curveId, x)` and `df(curveId, x)` for `x2` (2x), `x3` (3x²), `sin` (cos x), unknown id throws, non-finite x throws
+- [X] T032 [P] [US1] Create `src/core/linear.ts`: `predict(slope, intercept, x) = slope * x + intercept`
+- [X] T033 [US1] Create `src/core/loss.ts`: `residuals` (prediction − actual), `squaredErrors`, `mse = sum(squaredErrors) / n` using the compensated `sum`. Empty dataset and mismatched lengths throw. Depends on T012, T032
+- [X] T034 [P] [US1] Create `src/core/models/slopeOfCurve.ts`: role `x`, choice input `curve`; outputs `y`, `slope`, `tangentIntercept`, `curveX[]`, `curveY[]` (201 samples over -3..3), `tangentX[]`, `tangentY[]`. Slope comes from the exact rule, not from nearby points
+- [X] T035 [US1] Create `src/core/models/lineLoss.ts`: roles `slope` and `intercept`; outputs `n`, `predictions[]`, `errors[]`, `squaredErrors[]`, `mse`, `lineX[]`, `lineY[]`. Depends on T032, T033
+- [X] T036 [US1] Create `src/core/index.ts` exporting the public core API, then register both models in `src/sim/models.ts`. Depends on T034, T035. Makes T022, T023, T024 pass
 
 **Content data**
 
-- [ ] T037 [P] [US1] Create `src/content/datasets/loss-3.json` with `id` `loss-3`, points (1,2), (2,4), (3,5)
-- [ ] T038 [P] [US1] Create `src/content/datasets/weight-bias-4.json` with `id` `weight-bias-4`, points (1,3), (2,5), (3,7), (4,8)
+- [X] T037 [P] [US1] Create `src/content/datasets/loss-3.json` with `id` `loss-3`, points (1,2), (2,4), (3,5)
+- [X] T038 [P] [US1] Create `src/content/datasets/weight-bias-4.json` with `id` `weight-bias-4`, points (1,3), (2,5), (3,7), (4,8)
 
 **Simulation layer**
 
-- [ ] T039 [US1] Create `src/sim/lessonStore.ts`: a factory `createLessonStore(lesson)` returning a Zustand store with `params`, derived `outputs`, and `setParam(id, value)`. A number is "snapped to the nearest step from `min`, then clamped to `[min, max]`". A typed value that "is not a finite number is rejected, the previous value is kept" and the message is "Enter a number from -3.0 to 3.0" (range of that parameter, 1 decimal). Changing the choice parameter re-validates dependent values (B-09, B-10). Outputs are recomputed synchronously from the core model, with no debounce. Depends on T016, T017. Makes T025 pass
+- [X] T039 [US1] Create `src/sim/lessonStore.ts`: a factory `createLessonStore(lesson)` returning a Zustand store with `params`, derived `outputs`, and `setParam(id, value)`. A number is "snapped to the nearest step from `min`, then clamped to `[min, max]`". A typed value that "is not a finite number is rejected, the previous value is kept" and the message is "Enter a number from -3.0 to 3.0" (range of that parameter, 1 decimal). Changing the choice parameter re-validates dependent values (B-09, B-10). Outputs are recomputed synchronously from the core model, with no debounce. Depends on T016, T017. Makes T025 pass
 
 **Presentation**
 
-- [ ] T040 [P] [US1] Create `src/ui/charts/SliderHandle.tsx`: shared draggable handle with `role="slider"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-label`, arrow key moves one step, Shift + arrow moves ten steps, pointer drag snaps via `snapToStep`
-- [ ] T041 [P] [US1] Create `src/ui/charts/CurveTangentChart.tsx`: SVG chart (d3-scale and d3-shape for geometry, React renders) showing the curve, the point and a dashed tangent line, reading `curveX/curveY/tangentX/tangentY/x/y` from outputs
-- [ ] T042 [US1] Create `src/ui/charts/LineFitChart.tsx`: data points, the line, vertical error segments with value labels, option `handles` (true for Loss, false for Weight and bias) using `SliderHandle` for steepness and height. Depends on T040
-- [ ] T043 [US1] Register `curve-tangent` and `line-fit` in `src/ui/charts/chartRegistry.ts`. Depends on T041, T042
-- [ ] T044 [P] [US1] Create `src/ui/components/ControlPanel.tsx`: for each parameter a labelled slider plus number input (step 0.1, value shown with "1 decimal place"), a select for `choice` parameters, inline validation message from the store. Parameters with `control: "chart-handle"` get no slider here
-- [ ] T045 [P] [US1] Create `src/ui/components/FormulaBlock.tsx`: KaTeX-rendered formula and a symbol table (`symbol`, `meaning`), every symbol explained
-- [ ] T046 [P] [US1] Create `src/ui/components/WorkedExample.tsx`: renders the substituted steps (template engine output) through KaTeX
-- [ ] T047 [P] [US1] Create `src/ui/components/IntuitionText.tsx`: `react-markdown` with `remark-math` and `rehype-katex`
-- [ ] T048 [US1] Create `src/ui/components/ChartPanel.tsx`: picks the chart from the registry, shows the output values (labels, symbols, `decimals`) and a visible text summary from `chartSummary` with `role="img"` and `aria-label` on the chart. Depends on T043
-- [ ] T049 [US1] Create `src/ui/components/LessonLayout.tsx`: creates the lesson store when the lesson opens (so a refresh or direct link always starts at defaults), renders in order: title, `IntuitionText`, `ChartPanel` + `ControlPanel`, `FormulaBlock`, `WorkedExample`. Depends on T039, T044, T045, T046, T047, T048
-- [ ] T050 [US1] Create `src/ui/app/routes.tsx` with the route `#/lessons/:id` rendering `LessonLayout`, and use it in `src/ui/app/App.tsx`. Depends on T049
+- [X] T040 [P] [US1] Create `src/ui/charts/SliderHandle.tsx`: shared draggable handle with `role="slider"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-label`, arrow key moves one step, Shift + arrow moves ten steps, pointer drag snaps via `snapToStep`
+- [X] T041 [P] [US1] Create `src/ui/charts/CurveTangentChart.tsx`: SVG chart (d3-scale and d3-shape for geometry, React renders) showing the curve, the point and a dashed tangent line, reading `curveX/curveY/tangentX/tangentY/x/y` from outputs
+- [X] T042 [US1] Create `src/ui/charts/LineFitChart.tsx`: data points, the line, vertical error segments with value labels, option `handles` (true for Loss, false for Weight and bias) using `SliderHandle` for steepness and height. Depends on T040
+- [X] T043 [US1] Register `curve-tangent` and `line-fit` in `src/ui/charts/chartRegistry.ts`. Depends on T041, T042
+- [X] T044 [P] [US1] Create `src/ui/components/ControlPanel.tsx`: for each parameter a labelled slider plus number input (step 0.1, value shown with "1 decimal place"), a select for `choice` parameters, inline validation message from the store. Parameters with `control: "chart-handle"` get no slider here
+- [X] T045 [P] [US1] Create `src/ui/components/FormulaBlock.tsx`: KaTeX-rendered formula and a symbol table (`symbol`, `meaning`), every symbol explained
+- [X] T046 [P] [US1] Create `src/ui/components/WorkedExample.tsx`: renders the substituted steps (template engine output) through KaTeX
+- [X] T047 [P] [US1] Create `src/ui/components/IntuitionText.tsx`: `react-markdown` with `remark-math` and `rehype-katex`
+- [X] T048 [US1] Create `src/ui/components/ChartPanel.tsx`: picks the chart from the registry, shows the output values (labels, symbols, `decimals`) and a visible text summary from `chartSummary` with `role="img"` and `aria-label` on the chart. Depends on T043
+- [X] T049 [US1] Create `src/ui/components/LessonLayout.tsx`: creates the lesson store when the lesson opens (so a refresh or direct link always starts at defaults), renders in order: title, `IntuitionText`, `ChartPanel` + `ControlPanel`, `FormulaBlock`, `WorkedExample`. Depends on T039, T044, T045, T046, T047, T048
+- [X] T050 [US1] Create `src/ui/app/routes.tsx` with the route `#/lessons/:id` rendering `LessonLayout`, and use it in `src/ui/app/App.tsx`. Depends on T049
 
 **Lesson content (content-only, no engine edits)**
 
-- [ ] T051 [P] [US1] Create `src/content/lessons/foundations/function-and-slope/lesson.json` and `intuition.md`: model `slope-of-curve`, chart `curve-tangent`, parameter `x` (range -3 to 3, step 0.1, default 1.0), choice `curve` (x², x³, sin x, default x²), variants for `formula`, `workedExample` and `chartSummary` keyed by `curve`
-- [ ] T052 [P] [US1] Create `src/content/lessons/foundations/loss/lesson.json` and `intuition.md`: model `line-loss`, dataset `loss-3`, chart `line-fit` with `handles: true`, parameters `steepness` (-3 to 3, default 1.0) and `height` (-5 to 5, default 0.0) both `control: "chart-handle"` and no `symbol` (w and b are not introduced yet), MSE formula with every symbol explained
-- [ ] T053 [P] [US1] Create `src/content/lessons/foundations/weight-and-bias/lesson.json` and `intuition.md`: model `line-loss`, dataset `weight-bias-4`, chart `line-fit` with `handles: false`, parameters `w` (-3 to 3, default 1.0) and `b` (-5 to 5, default 0.0) as sliders with symbols, formulas for `y = w·x + b` and MSE, worked example with the current w and b substituted
+- [X] T051 [P] [US1] Create `src/content/lessons/foundations/function-and-slope/lesson.json` and `intuition.md`: model `slope-of-curve`, chart `curve-tangent`, parameter `x` (range -3 to 3, step 0.1, default 1.0), choice `curve` (x², x³, sin x, default x²), variants for `formula`, `workedExample` and `chartSummary` keyed by `curve`
+- [X] T052 [P] [US1] Create `src/content/lessons/foundations/loss/lesson.json` and `intuition.md`: model `line-loss`, dataset `loss-3`, chart `line-fit` with `handles: true`, parameters `steepness` (-3 to 3, default 1.0) and `height` (-5 to 5, default 0.0) both `control: "chart-handle"` and no `symbol` (w and b are not introduced yet), MSE formula with every symbol explained
+- [X] T053 [P] [US1] Create `src/content/lessons/foundations/weight-and-bias/lesson.json` and `intuition.md`: model `line-loss`, dataset `weight-bias-4`, chart `line-fit` with `handles: false`, parameters `w` (-3 to 3, default 1.0) and `b` (-5 to 5, default 0.0) as sliders with symbols, formulas for `y = w·x + b` and MSE, worked example with the current w and b substituted
 
 **Checkpoint**: T022 to T030 pass. Each of the three lessons works at its direct address, and quickstart.md US1 scenarios give the expected values. This is the MVP.
 

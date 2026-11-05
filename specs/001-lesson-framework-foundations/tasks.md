@@ -203,15 +203,15 @@ charts, controls and text legible.
 
 ### Tests for User Story 4 (write first, they MUST fail)
 
-- [ ] T064 [P] [US4] Write `tests/unit/sim/themeStore.test.ts`: B-12 (initial value follows `prefers-color-scheme`, `toggle()` flips it, value is held in memory only)
-- [ ] T065 [P] [US4] Write `tests/component/themeToggle.test.tsx`: D-16 (toggle available on the list and on every lesson, `data-theme` changes, the mode survives navigation) and D-17 (Reset does not change the theme)
-- [ ] T066 [P] [US4] Write `tests/unit/ui/paletteContrast.test.ts`: D-23 (computed contrast ratios between every palette token and each theme background meet WCAG AA for text and 3:1 for graphics)
+- [X] T064 [P] [US4] Write `tests/unit/sim/themeStore.test.ts`: B-12 (initial value follows `prefers-color-scheme`, `toggle()` flips it, value is held in memory only)
+- [X] T065 [P] [US4] Write `tests/component/themeToggle.test.tsx`: D-16 (toggle available on the list and on every lesson, `data-theme` changes, the mode survives navigation) and D-17 (Reset does not change the theme)
+- [X] T066 [P] [US4] Write `tests/unit/ui/paletteContrast.test.ts`: D-23 (computed contrast ratios between every palette token and each theme background meet WCAG AA for text and 3:1 for graphics)
 
 ### Implementation for User Story 4
 
-- [ ] T067 [P] [US4] Create `src/sim/themeStore.ts`: Zustand store with `theme: 'light' | 'dark'`, initial value from `prefers-color-scheme`, `toggle()`. No persistence. Makes T064 pass
-- [ ] T068 [P] [US4] Add the dark-theme variables (`[data-theme="dark"]`) to `src/ui/styles/tokens.css` and make `src/ui/charts/palette.ts` expose theme-specific Okabe-Ito values. Makes T066 pass
-- [ ] T069 [US4] Create `src/ui/components/ThemeToggle.tsx` (native button with `aria-pressed` and a text label, sets `data-theme` on `<html>`) and render it in the header of `src/ui/app/App.tsx`. Depends on T067, T068. Makes T065 pass
+- [X] T067 [P] [US4] Create `src/sim/themeStore.ts`: Zustand store with `theme: 'light' | 'dark'`, initial value from `prefers-color-scheme`, `toggle()`. No persistence. Makes T064 pass
+- [X] T068 [P] [US4] Add the dark-theme variables (`[data-theme="dark"]`) to `src/ui/styles/tokens.css` and make `src/ui/charts/palette.ts` expose theme-specific Okabe-Ito values. Makes T066 pass
+- [X] T069 [US4] Create `src/ui/components/ThemeToggle.tsx` (native button with `aria-pressed` and a text label, sets `data-theme` on `<html>`) and render it in the header of `src/ui/app/App.tsx`. Depends on T067, T068. Makes T065 pass
 
 **Checkpoint**: T064 to T066 pass, and charts remain legible in both themes.
 

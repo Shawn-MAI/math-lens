@@ -20,6 +20,8 @@
   --c-sky: #56b4e9;
   --c-purple: #cc79a7;
   --c-ink: #111827;
+  --c-handle: #b35900;
+  --c-error: #b34700;
 
   --chart-grid: #e5e7eb;
   --chart-axis: #374151;
@@ -45,6 +47,8 @@
   --c-sky: #7cc0f5;
   --c-purple: #e59ac2;
   --c-ink: #f3f4f6;
+  --c-handle: #f0b429;
+  --c-error: #f08a4b;
 
   --chart-grid: #374151;
   --chart-axis: #d1d5db;

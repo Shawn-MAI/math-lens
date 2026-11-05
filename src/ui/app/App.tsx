@@ -1,4 +1,5 @@
 import { HashRouter } from 'react-router-dom'
+import { ThemeToggle } from '../components/ThemeToggle'
 import { AppRoutes } from './routes'
 
 export function App() {
@@ -9,6 +10,7 @@ export function App() {
       </a>
       <header className="app-header">
         <strong>MathLens</strong>
+        <ThemeToggle />
       </header>
       <main id="main" className="app-main">
         <AppRoutes />

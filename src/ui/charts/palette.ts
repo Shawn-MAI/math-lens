@@ -5,8 +5,8 @@ export const palette = {
   point: 'var(--c-ink)',
   data: 'var(--c-ink)',
   line: 'var(--c-blue)',
-  error: 'var(--c-vermillion)',
-  handle: 'var(--c-orange)',
+  error: 'var(--c-error)',
+  handle: 'var(--c-handle)',
   grid: 'var(--chart-grid)',
   axis: 'var(--chart-axis)',
 } as const

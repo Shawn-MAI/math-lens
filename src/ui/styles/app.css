@@ -230,7 +230,7 @@ button:hover {
 
 .control-message {
   margin: 0.25rem 0 0;
-  color: var(--c-vermillion);
+  color: var(--c-error);
   font-weight: 600;
 }
 
@@ -296,4 +296,21 @@ button:hover {
 
 .reset-button:hover {
   background: var(--border-soft);
+}
+
+.theme-toggle {
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  cursor: pointer;
+}
+
+.theme-toggle[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
 }

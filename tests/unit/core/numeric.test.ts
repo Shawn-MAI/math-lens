@@ -1,5 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { clamp, roundTo, snapToStep, sum } from '../../../src/core/numeric'
+import { clamp, decimalPlaces, roundTo, snapToStep, sum } from '../../../src/core/numeric'
+
+describe('decimalPlaces', () => {
+  it('counts ordinary and exponential decimal precision', () => {
+    expect(decimalPlaces(0.0005)).toBe(4)
+    expect(decimalPlaces(1e-7)).toBe(7)
+    expect(decimalPlaces(1.23e-7)).toBe(9)
+    expect(decimalPlaces(1.23e21)).toBe(0)
+  })
+
+  it('rejects non-finite values', () => {
+    expect(() => decimalPlaces(NaN)).toThrowError(RangeError)
+    expect(() => decimalPlaces(Infinity)).toThrowError(RangeError)
+  })
+})
 
 describe('snapToStep (A1-01 to A1-03, A1-05)', () => {
   it('A1-01: removes floating point drift', () => {
@@ -20,6 +34,10 @@ describe('snapToStep (A1-01 to A1-03, A1-05)', () => {
 
   it('snaps relative to min when min is not a multiple of the step', () => {
     expect(snapToStep(0.33, 0.25, 0.1)).toBe(0.35)
+  })
+
+  it('snaps values represented in scientific notation', () => {
+    expect(snapToStep(2e-7, 1e-7, 0)).toBe(2e-7)
   })
 
   it('A1-05: non-finite input throws RangeError', () => {
@@ -72,12 +90,19 @@ describe('roundTo (A1-06)', () => {
     expect(roundTo(2.5, 0)).toBe(3)
   })
 
+  it('rounds finite values represented in scientific notation', () => {
+    expect(roundTo(1.23e-7, 9)).toBe(1.23e-7)
+  })
+
   it('never returns negative zero', () => {
     expect(Object.is(roundTo(-0.04, 1), 0)).toBe(true)
   })
 
   it('throws RangeError for non-finite input', () => {
     expect(() => roundTo(NaN, 1)).toThrowError(RangeError)
+    expect(() => roundTo(1, NaN)).toThrowError(RangeError)
+    expect(() => roundTo(1, Infinity)).toThrowError(RangeError)
+    expect(() => roundTo(1, 0.5)).toThrowError(RangeError)
   })
 })
 

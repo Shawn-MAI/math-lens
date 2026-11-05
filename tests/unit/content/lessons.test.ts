@@ -1,7 +1,7 @@
 import katex from 'katex'
 import { describe, expect, it } from 'vitest'
 import { getLessonCatalog } from '../../../src/sim/content/loader'
-import type { Lesson } from '../../../src/sim/content/schema'
+import { isTrainingLesson, type Lesson } from '../../../src/sim/content/schema'
 import { createLessonStore } from '../../../src/sim/lessonStore'
 import { getModel } from '../../../src/sim/models'
 import { renderLesson } from '../../../src/sim/lessonView'
@@ -9,7 +9,7 @@ import { TOPICS } from '../../../src/sim/content/topics'
 import { CHARTS } from '../../../src/ui/charts/chartRegistry'
 
 const catalog = getLessonCatalog()
-const lessons = catalog.lessons
+const lessons = catalog.lessons.filter((lesson): lesson is Lesson => !isTrainingLesson(lesson))
 
 /** What each chart type needs from the model (contracts/chart-types.md) and which options name parameters. */
 const CHART_CONTRACT: Record<string, { outputs: string[]; paramOptions: string[]; handleOptions: string[] }> = {
@@ -25,7 +25,7 @@ const FOUNDATIONS = ['function-and-slope', 'loss', 'weight-and-bias']
 
 const byId = (id: string): Lesson => {
   const lesson = catalog.getLesson(id)
-  if (!lesson) throw new Error(`missing lesson ${id}`)
+  if (!lesson || isTrainingLesson(lesson)) throw new Error(`missing static lesson ${id}`)
   return lesson
 }
 

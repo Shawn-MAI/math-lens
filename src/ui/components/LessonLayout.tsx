@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useStore } from 'zustand'
-import type { Lesson } from '../../sim/content/schema'
+import { isTrainingLesson, type AnyLesson, type Lesson } from '../../sim/content/schema'
 import { createLessonStore } from '../../sim/lessonStore'
 import { renderLesson } from '../../sim/lessonView'
 import { ChartPanel } from './ChartPanel'
@@ -8,6 +8,7 @@ import { ControlPanel } from './ControlPanel'
 import { FormulaBlock } from './FormulaBlock'
 import { IntuitionText } from './IntuitionText'
 import { WorkedExample } from './WorkedExample'
+import { TrainingLessonLayout } from './TrainingLessonLayout'
 
 function LessonBody({ lesson }: { lesson: Lesson }) {
   // The store is created when the lesson opens, so a refresh or a direct link always starts at the defaults.
@@ -49,6 +50,7 @@ function LessonBody({ lesson }: { lesson: Lesson }) {
   )
 }
 
-export function LessonLayout({ lesson }: { lesson: Lesson }) {
+export function LessonLayout({ lesson }: { lesson: AnyLesson }) {
+  if (isTrainingLesson(lesson)) return <TrainingLessonLayout key={lesson.id} lesson={lesson} />
   return <LessonBody key={lesson.id} lesson={lesson} />
 }

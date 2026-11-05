@@ -13,6 +13,9 @@ const pages: [string, string][] = [
   ['Function and slope', '#/lessons/function-and-slope'],
   ['Loss', '#/lessons/loss'],
   ['Weight and bias', '#/lessons/weight-and-bias'],
+  ['Gradient descent on a curve', '#/lessons/gradient-descent-1d'],
+  ['Different starting points', '#/lessons/gradient-descent-nonconvex'],
+  ['Two weights, one loss', '#/lessons/gradient-descent-2d'],
   ['the not-found page', '#/lessons/nope'],
 ]
 

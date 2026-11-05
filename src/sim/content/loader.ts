@@ -1,7 +1,12 @@
 import type { Model, Point } from '../../core/types'
+import { assertCompatibleDimensions } from '../../core/training/types'
 import { MODELS } from '../models'
-import { assertVariantCovers } from '../template'
-import { datasetSchema, lessonSchema, type Dataset, type Lesson } from './schema'
+import { assertVariantCovers, renderTemplate, type TemplateContext } from '../template'
+import { TRAINING_REGISTRY, type TrainingRegistry } from '../training/registry'
+import {
+  datasetSchema, staticLessonSchema, trainingLessonSchema,
+  type AnyLesson, type Dataset, type Lesson, type TrainingLessonJson,
+} from './schema'
 import { TOPICS, type TopicId } from './topics'
 
 /** Raw content files keyed by their path. JSON files are already parsed, Markdown files are text. */
@@ -13,11 +18,11 @@ export interface ContentFiles {
 
 export interface Catalog {
   /** Sorted by topic order, then lesson order. */
-  lessons: Lesson[]
+  lessons: AnyLesson[]
   datasets: Record<string, Dataset>
-  getLesson(id: string): Lesson | undefined
+  getLesson(id: string): AnyLesson | undefined
   getDataset(id: string): Dataset | undefined
-  getLessonsByTopic(topic: TopicId): Lesson[]
+  getLessonsByTopic(topic: TopicId): AnyLesson[]
 }
 
 const RESERVED_NAMES = ['dataX', 'dataY']
@@ -31,7 +36,11 @@ function formatZodError(error: { issues: { path: PropertyKey[]; message: string 
 }
 
 /** Validates content files and builds the catalog. Throws one error listing every problem found. */
-export function buildCatalog(files: ContentFiles, models: Record<string, Model> = MODELS): Catalog {
+export function buildCatalog(
+  files: ContentFiles,
+  models: Record<string, Model> = MODELS,
+  trainingRegistry: TrainingRegistry = TRAINING_REGISTRY,
+): Catalog {
   const problems: string[] = []
   const fail = (where: string, message: string) => problems.push(`${where}: ${message}`)
 
@@ -53,7 +62,7 @@ export function buildCatalog(files: ContentFiles, models: Record<string, Model> 
     if (match) intuitions.set(`${match[1]}/${match[2]}`, text)
   }
 
-  const lessons: Lesson[] = []
+  const lessons: AnyLesson[] = []
   const seenIds = new Set<string>()
   const seenOrders = new Set<string>()
 
@@ -64,7 +73,8 @@ export function buildCatalog(files: ContentFiles, models: Record<string, Model> 
       continue
     }
     const [, folderTopic, folderId] = match as unknown as [string, string, string]
-    const parsed = lessonSchema.safeParse(raw)
+    const isTraining = typeof raw === 'object' && raw !== null && 'kind' in raw && raw.kind === 'training'
+    const parsed = isTraining ? trainingLessonSchema.safeParse(raw) : staticLessonSchema.safeParse(raw)
     if (!parsed.success) {
       fail(path, formatZodError(parsed.error))
       continue
@@ -83,7 +93,8 @@ export function buildCatalog(files: ContentFiles, models: Record<string, Model> 
     const intuition = intuitions.get(`${folderTopic}/${folderId}`)
     if (intuition === undefined || intuition.trim() === '') fail(where, 'intuition.md is missing or empty')
 
-    checkModelAndParameters(data, models, datasets, where, fail)
+    if ('kind' in data) checkTrainingLesson(data, trainingRegistry, where, fail)
+    else checkModelAndParameters(data, models, datasets, where, fail)
 
     const choiceOptions: Record<string, string[]> = {}
     for (const p of data.parameters) if (p.type === 'choice') choiceOptions[p.id] = p.options.map((o) => o.value)
@@ -110,6 +121,78 @@ export function buildCatalog(files: ContentFiles, models: Record<string, Model> 
     getLesson: (id) => byId.get(id),
     getDataset: (id) => datasets[id],
     getLessonsByTopic: (topic) => lessons.filter((l) => l.topic === topic),
+  }
+}
+
+function checkTrainingLesson(
+  lesson: TrainingLessonJson,
+  registry: TrainingRegistry,
+  where: string,
+  fail: (where: string, message: string) => void,
+): void {
+  const { adapter: adapterId, landscape: landscapeId, dimensions, weightParameters, rateParameter } = lesson.training
+  const adapter = registry.adapters[adapterId]
+  const landscape = registry.landscapes[landscapeId]
+  const chartDimensions = registry.charts[lesson.chart.type]
+  if (!adapter) fail(where, `unknown training adapter "${adapterId}"`)
+  if (!landscape) fail(where, `unknown training landscape "${landscapeId}"`)
+  if (!chartDimensions) fail(where, `unknown training chart "${lesson.chart.type}"`)
+  if (landscape && landscape.dimensions !== dimensions) fail(where, 'landscape dimensions must match lesson dimensions')
+  if (chartDimensions && chartDimensions !== dimensions) fail(where, 'chart dimensions must match lesson dimensions')
+  if (adapter && landscape) {
+    try {
+      assertCompatibleDimensions(adapter, landscape)
+    } catch (error) {
+      if (!(error instanceof Error)) throw error
+      fail(where, error.message)
+    }
+  }
+  for (const id of weightParameters) {
+    if (lesson.parameters.find((parameter) => parameter.id === id)?.type !== 'number') {
+      fail(where, `weight binding "${id}" must name a number parameter`)
+    }
+  }
+  if (lesson.parameters.find((parameter) => parameter.id === rateParameter)?.type !== 'number') {
+    fail(where, `rate binding "${rateParameter}" must name a number parameter`)
+  }
+  if (weightParameters.includes(rateParameter)) fail(where, 'rate and weight bindings must be different')
+
+  const formulas = 'variants' in lesson.formula ? Object.values(lesson.formula.variants) : [lesson.formula]
+  const formattingCommands = new Set(['\\frac', '\\cdot', '\\times', '\\quad', '\\qquad', '\\left', '\\right', '\\hat'])
+  for (const item of formulas) {
+    const tokens = item.latex.replace(/\\text\{[^}]*\}/g, '').match(/\\[a-zA-Z]+|[a-zA-Z]/g) ?? []
+    for (const token of new Set(tokens)) {
+      if (!formattingCommands.has(token) && !item.symbols.some((symbol) => symbol.symbol.includes(token))) {
+        fail(where, `formula symbol "${token}" has no explanation`)
+      }
+    }
+  }
+
+  const context: TemplateContext = {
+    step: '0',
+    weights: Array<string>(dimensions).fill('0'),
+    gradient: Array<string>(dimensions).fill('0'),
+    updates: Array<string>(dimensions).fill('0'),
+    nextWeights: Array<string>(dimensions).fill('0'),
+    loss: '0',
+  }
+  for (const parameter of lesson.parameters) context[parameter.id] = String(parameter.default)
+  for (const output of lesson.outputs) {
+    if (!(output.key in context)) context[output.key] = '0'
+  }
+  const workedExamples = 'variants' in lesson.workedExample
+    ? Object.values(lesson.workedExample.variants)
+    : [lesson.workedExample]
+  const summaries = typeof lesson.chartSummary === 'string'
+    ? [lesson.chartSummary]
+    : Object.values(lesson.chartSummary.variants)
+  for (const text of [...summaries, ...workedExamples.flatMap((steps) => steps.flatMap((step) => [step.text, step.latex]))]) {
+    try {
+      renderTemplate(text, context, `${where} training template`)
+    } catch (error) {
+      if (!(error instanceof Error)) throw error
+      fail(where, error.message)
+    }
   }
 }
 
@@ -172,7 +255,7 @@ export function getLessonCatalog(): Catalog {
   return cached
 }
 
-export function getLesson(id: string): Lesson | undefined {
+export function getLesson(id: string): AnyLesson | undefined {
   return getLessonCatalog().getLesson(id)
 }
 

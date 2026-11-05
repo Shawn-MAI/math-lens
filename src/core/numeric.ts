@@ -12,17 +12,23 @@ export function clamp(value: number, min: number, max: number): number {
 /** Rounds to `decimals` places, half away from zero, without float drift. Never returns -0. */
 export function roundTo(value: number, decimals: number): number {
   assertFinite(value, 'value')
-  const rounded = Number(`${Math.round(Number(`${Math.abs(value)}e${decimals}`))}e-${decimals}`)
+  if (!Number.isInteger(decimals)) throw new RangeError('decimals must be a finite integer')
+  const shift = (number: number, places: number) => {
+    const [coefficient, exponent = '0'] = String(number).split('e')
+    return Number(`${coefficient}e${Number(exponent) + places}`)
+  }
+  const scaled = shift(Math.abs(value), decimals)
+  const rounded = Number.isFinite(scaled) ? shift(Math.round(scaled), -decimals) : Math.abs(value)
   const result = value < 0 ? -rounded : rounded
   return result === 0 ? 0 : result
 }
 
 /** Number of decimal places in the shortest decimal form of `value`. */
-function decimalPlaces(value: number): number {
-  const text = String(value)
-  const exponent = /e-(\d+)$/.exec(text)
-  if (exponent) return Number(exponent[1]) + (text.split('e')[0]!.split('.')[1]?.length ?? 0)
-  return text.split('.')[1]?.length ?? 0
+export function decimalPlaces(value: number): number {
+  assertFinite(value, 'value')
+  const [coefficient = '', exponent = '0'] = String(value).split('e')
+  const fraction = coefficient.split('.')[1]?.length ?? 0
+  return Math.max(0, fraction - Number(exponent))
 }
 
 /**

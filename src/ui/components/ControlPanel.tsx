@@ -1,14 +1,20 @@
 import { useId, useState } from 'react'
-import type { ChoiceParameter, Lesson, NumberParameter } from '../../sim/content/schema'
+import { decimalPlaces } from '../../core/numeric'
+import type { AnyLesson, ChoiceParameter, NumberParameter } from '../../sim/content/schema'
 import type { ParamValue, SetParamResult } from '../../sim/lessonStore'
 import { formatNumber } from '../../sim/template'
 
 interface ControlPanelProps {
-  lesson: Lesson
+  lesson: AnyLesson
   params: Record<string, ParamValue>
   messages: Record<string, string>
   setParam: (id: string, raw: ParamValue) => SetParamResult
   reset: () => void
+}
+
+function formatParameterValue(value: number, parameter: NumberParameter): string {
+  const precision = Math.max(1, decimalPlaces(parameter.step), decimalPlaces(parameter.min))
+  return precision <= 100 ? formatNumber(value, precision) : String(value)
 }
 
 function NumberControl({ p, value, message, setParam }: { p: NumberParameter; value: number; message?: string; setParam: ControlPanelProps['setParam'] }) {
@@ -35,7 +41,7 @@ function NumberControl({ p, value, message, setParam }: { p: NumberParameter; va
           max={p.max}
           step={p.step}
           value={value}
-          aria-valuetext={formatNumber(value, 1)}
+          aria-valuetext={formatParameterValue(value, p)}
           onChange={(e) => setParam(p.id, e.target.value)}
         />
         <input
@@ -45,7 +51,7 @@ function NumberControl({ p, value, message, setParam }: { p: NumberParameter; va
           aria-label={`${p.label} value`}
           aria-describedby={message ? messageId : undefined}
           aria-invalid={message ? true : undefined}
-          value={draft ?? formatNumber(value, 1)}
+          value={draft ?? formatParameterValue(value, p)}
           onChange={(e) => setDraft(e.target.value)}
           onBlur={commit}
           onKeyDown={(e) => {
@@ -93,7 +99,7 @@ export function ControlPanel({ lesson, params, messages, setParam, reset }: Cont
             <div key={p.id} className="control">
               <span className="control-label">{p.label}</span>
               <output data-testid={`value-${p.id}`} className="control-value">
-                {formatNumber(params[p.id] as number, 1)}
+                {formatParameterValue(params[p.id] as number, p)}
               </output>
             </div>
           )

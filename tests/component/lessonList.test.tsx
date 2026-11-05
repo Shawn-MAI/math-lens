@@ -12,7 +12,7 @@ const renderAt = (path: string) =>
   )
 
 describe('lesson list (US2)', () => {
-  it('D-01: shows the four topics in order; Foundations has three lessons, the others say "coming soon" with no link', () => {
+  it('D-01: shows the four topics in order and lists available lessons', () => {
     renderAt('/')
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)
     expect(headings).toEqual(['Foundations', 'Optimization', 'Models', 'Neural Networks'])
@@ -21,11 +21,22 @@ describe('lesson list (US2)', () => {
     const links = within(foundations).getAllByRole('link')
     expect(links.map((l) => l.textContent)).toEqual([expect.stringContaining('Function and slope'), expect.stringContaining('Loss'), expect.stringContaining('Weight and bias')])
 
-    for (const name of ['Optimization', 'Models', 'Neural Networks']) {
+    const optimization = screen.getByRole('region', { name: 'Optimization' })
+    expect(within(optimization).getByRole('link', { name: /gradient descent on a curve/i })).toBeInTheDocument()
+
+    for (const name of ['Models', 'Neural Networks']) {
       const region = screen.getByRole('region', { name })
       expect(within(region).getByText(/coming soon/i)).toBeInTheDocument()
       expect(within(region).queryByRole('link')).toBeNull()
     }
+  })
+
+  it('opens the optimization lesson from the list', async () => {
+    const user = userEvent.setup()
+    renderAt('/')
+    await user.click(screen.getByRole('link', { name: /gradient descent on a curve/i }))
+    expect(screen.getByRole('heading', { level: 1, name: /gradient descent on a curve/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^play$/i })).toBeEnabled()
   })
 
   it('shows a one-line summary with each lesson', () => {

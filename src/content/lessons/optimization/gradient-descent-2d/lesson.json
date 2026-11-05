@@ -1,0 +1,49 @@
+{
+  "kind": "training",
+  "id": "gradient-descent-2d",
+  "topic": "optimization",
+  "order": 3,
+  "title": "Two weights, one loss",
+  "summary": "Follow gradient descent across a bowl-shaped loss surface using two weights.",
+  "chart": { "type": "training-contour" },
+  "parameters": [
+    { "type": "number", "id": "x", "label": "First weight", "symbol": "x", "min": -5, "max": 5, "step": 0.1, "default": 4, "control": "slider" },
+    { "type": "number", "id": "y", "label": "Second weight", "symbol": "y", "min": -5, "max": 5, "step": 0.1, "default": 2, "control": "slider" },
+    { "type": "number", "id": "rate", "label": "Learning rate", "symbol": "η", "min": 0, "max": 4, "step": 0.0005, "default": 0.15, "control": "slider" }
+  ],
+  "outputs": [{ "key": "loss", "label": "Loss", "symbol": "L", "decimals": 6 }],
+  "training": {
+    "adapter": "gradient-descent",
+    "landscape": "convex-2d",
+    "dimensions": 2,
+    "weightParameters": ["x", "y"],
+    "rateParameter": "rate",
+    "presets": { "small": 0.0005, "good": 0.15, "large": 0.4 }
+  },
+  "formula": {
+    "latex": "L(x,y)=\\frac{1}{2}(x^2+10y^2),\\quad g_x=x,\\quad g_y=10y,\\quad x'=x-\\eta g_x,\\quad y'=y-\\eta g_y",
+    "symbols": [
+      { "symbol": "L", "meaning": "Loss: the height of the surface that we want to reduce." },
+      { "symbol": "x", "meaning": "First weight; x′ is its next value." },
+      { "symbol": "y", "meaning": "Second weight; y′ is its next value." },
+      { "symbol": "g_x", "meaning": "First gradient component: the loss slope in the first weight direction." },
+      { "symbol": "g_y", "meaning": "Second gradient component: the loss slope in the second weight direction." },
+      { "symbol": "\\eta", "meaning": "Learning rate: how strongly each gradient component changes its weight." }
+    ]
+  },
+  "workedExample": [
+    {
+      "text": "At step {{step}}, the weights are {{weights[0]}} and {{weights[1]}}, and the loss is {{loss}}.",
+      "latex": "L({{weights[0]}},{{weights[1]}})=\\frac{1}{2}\\left(({{weights[0]}})^2+10({{weights[1]}})^2\\right) \\approx {{loss}}"
+    },
+    {
+      "text": "Using the same current weights and learning rate {{rate}}, calculate both next weights.",
+      "latex": "{{weights[0]}} - {{rate}} \\times \\left({{gradient[0]}}\\right) \\approx {{nextWeights[0]}}"
+    },
+    {
+      "text": "The second gradient component is {{gradient[1]}}; its next weight is {{nextWeights[1]}}.",
+      "latex": "{{weights[1]}} - {{rate}} \\times \\left({{gradient[1]}}\\right) \\approx {{nextWeights[1]}}"
+    }
+  ],
+  "chartSummary": "At step {{step}}, weights {{weights[0]}} and {{weights[1]}} have loss {{loss}}."
+}

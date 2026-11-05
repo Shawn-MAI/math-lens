@@ -259,3 +259,26 @@ button:hover {
 .worked-example p {
   margin: 0;
 }
+
+/* Lesson list */
+.topic ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.topic li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.lesson-summary,
+.coming-soon {
+  color: var(--text-muted);
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+}

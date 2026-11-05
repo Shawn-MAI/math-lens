@@ -160,15 +160,15 @@ return. Empty topics show "coming soon".
 
 ### Tests for User Story 2 (write first, they MUST fail)
 
-- [ ] T054 [P] [US2] Write `tests/component/lessonList.test.tsx`: D-01 (four topics in order, three lessons under Foundations, others "coming soon" without links) and D-02 (open a lesson from the list, then use the "back to list" link)
-- [ ] T055 [P] [US2] Write `tests/component/notFound.test.tsx`: D-18 (unknown lesson address shows the not-found message and a link to the list)
-- [ ] T056 [P] [US2] Write `tests/unit/content/extension.test.ts`: C-14 (a fixture lesson injected through `buildCatalog` under a temporary content root, reusing `line-loss` and `line-fit`, appears in the catalog and renders with no change to `src/sim`, `src/ui` or the engine)
+- [X] T054 [P] [US2] Write `tests/component/lessonList.test.tsx`: D-01 (four topics in order, three lessons under Foundations, others "coming soon" without links) and D-02 (open a lesson from the list, then use the "back to list" link)
+- [X] T055 [P] [US2] Write `tests/component/notFound.test.tsx`: D-18 (unknown lesson address shows the not-found message and a link to the list)
+- [X] T056 [P] [US2] Write `tests/unit/content/extension.test.tsx` (renders, so `.tsx`): C-14 (a fixture lesson injected through `buildCatalog` under a temporary content root, reusing `line-loss` and `line-fit`, appears in the catalog and renders with no change to `src/sim`, `src/ui` or the engine)
 
 ### Implementation for User Story 2
 
-- [ ] T057 [P] [US2] Create `src/ui/components/LessonList.tsx`: topics from `topics.ts`, lessons from the catalog sorted by `order` (title and summary as links), topics with no lessons shown as "coming soon" without a link (FR-001, FR-002)
-- [ ] T058 [P] [US2] Create `src/ui/components/NotFound.tsx`: "lesson not found" message with a link back to the list (FR-020)
-- [ ] T059 [US2] Update `src/ui/app/routes.tsx` with route `#/` for `LessonList` and a catch-all route (and unknown lesson id) for `NotFound`, and add a "back to list" link in `src/ui/components/LessonLayout.tsx` (FR-003). Depends on T057, T058
+- [X] T057 [P] [US2] Create `src/ui/components/LessonList.tsx`: topics from `topics.ts`, lessons from the catalog sorted by `order` (title and summary as links), topics with no lessons shown as "coming soon" without a link (FR-001, FR-002)
+- [X] T058 [P] [US2] Create `src/ui/components/NotFound.tsx`: "lesson not found" message with a link back to the list (FR-020)
+- [X] T059 [US2] Update `src/ui/app/routes.tsx` with route `#/` for `LessonList` and a catch-all route (and unknown lesson id) for `NotFound`, and add a "back to list" link in the lesson route (kept out of `LessonLayout`, which renders without a router in tests) (FR-003). Depends on T057, T058
 
 **Checkpoint**: T054 to T056 pass, and FR-022 is demonstrated (a new lesson is content only).
 

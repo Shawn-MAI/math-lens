@@ -1,5 +1,5 @@
 import type { ModelOutput } from '../core'
-import type { TrainingSnapshot } from '../core/training/types'
+import type { TrainingSnapshot, TrainingTransition } from '../core/training/types'
 import { getDataset } from './content/loader'
 import type { Formula, Lesson, WorkedStep } from './content/schema'
 import type { ParamValue } from './lessonStore'
@@ -22,16 +22,21 @@ export interface RenderedLesson {
   readouts: Readout[]
 }
 
-export function buildTrainingContext(snapshot: TrainingSnapshot): TemplateContext {
+export function buildTrainingContext(snapshot: TrainingSnapshot, transition?: TrainingTransition | null): TemplateContext {
   if (!Number.isInteger(snapshot.index) || snapshot.index < 0) {
     throw new Error('Training snapshot index must be a non-negative integer')
   }
-  return {
+  const context: TemplateContext = {
     step: String(snapshot.index),
     weights: snapshot.weights.map(formatTrainingNumber),
     loss: formatTrainingNumber(snapshot.loss),
     gradient: snapshot.gradient.map(formatTrainingNumber),
   }
+  if (transition) {
+    context.updates = transition.update.map(formatTrainingNumber)
+    context.nextWeights = transition.newWeights.map(formatTrainingNumber)
+  }
+  return context
 }
 
 /** The values a template can refer to, formatted as the contract describes. */

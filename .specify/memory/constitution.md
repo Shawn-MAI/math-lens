@@ -1,3 +1,15 @@
+<!--
+Sync Impact Report
+Version: 1.1.0 -> 2.0.0
+Modified principle: IX. Branch-per-Feature Git Workflow (removed the clean-working-tree gate).
+Added sections: none.
+Removed sections: none.
+Rationale: Allow work to continue on the feature branch with uncommitted changes.
+Migration: Existing feature work may continue with uncommitted changes; branch and
+post-analysis commit requirements remain in effect.
+Deferred items: none.
+-->
+
 # MathLens Constitution
 
 MathLens is an interactive website that teaches the math behind AI, machine learning and deep
@@ -71,9 +83,8 @@ runs, using the installed Spec Kit git extension.
   branch. If `/speckit.specify`, `/speckit.plan`, `/speckit.tasks` or `/speckit.implement` is
   started and the current branch is not the feature branch, the agent MUST stop and tell the
   user instead of continuing.
-- If automatic branch creation fails or the working tree has uncommitted changes, the agent
-  MUST stop and tell the user instead of continuing. It MUST NOT fall back to working on `main`
-  or silently create the branch by hand.
+- If automatic branch creation fails, the agent MUST stop and tell the user instead of
+  continuing. It MUST NOT fall back to working on `main` or silently create the branch by hand.
 - Auto-commit after analysis: when `/speckit-analyze` finishes with zero CRITICAL findings, the
   agent MUST run `/speckit-git-commit` automatically, without asking, so the analyzed spec, plan
   and tasks are committed on the feature branch before `/speckit-implement` starts. The commit
@@ -83,7 +94,7 @@ runs, using the installed Spec Kit git extension.
   unchanged. `/speckit-analyze` itself stays read-only: only the follow-up commit writes to git.
 
 Rationale: isolated branches keep `main` stable and make each feature reviewable on its own, and
-committing each analyzed state keeps the working tree clean for the next step.
+committing each analyzed state records the approved artifacts before implementation.
 
 ## Technical Constraints
 
@@ -123,4 +134,4 @@ expanded guidance; PATCH for clarifications, wording or typo fixes.
 Compliance MUST be checked at the plan phase (Constitution Check) and again during pull-request
 review. Violations MUST be fixed or explicitly justified in the plan's complexity tracking.
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05
+**Version**: 2.0.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

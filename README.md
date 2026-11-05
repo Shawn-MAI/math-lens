@@ -3,8 +3,14 @@
 An interactive website that teaches the math behind AI, machine learning and deep learning through visualization.
 It is a static, client-side site: every number and chart is computed in the browser.
 
-The first feature is the lesson framework with three foundation lessons: **Function and slope**, **Loss** and
-**Weight and bias**.
+The Foundations topic includes **Function and slope**, **Loss** and **Weight and bias**.
+Optimization adds **Gradient descent on a curve**, **Different starting points** and
+**Two weights, one loss**.
+
+Training lessons show each computed gradient and update. Play or pause, adjust the speed, step
+through or scrub the retained history, and compare learning-rate presets. Editing the rate at an
+earlier step creates a new history branch when training continues; the branch selector keeps
+previous futures available. Changing the starting weights restarts the run.
 
 ## Requirements
 
@@ -33,10 +39,15 @@ npm run preview     # serve dist/ locally
 | `src/content/` | Lessons (JSON and Markdown) and datasets | Content only |
 
 To add a lesson, add a folder under `src/content/lessons/<topic>/<lesson-id>/` with `lesson.json` and `intuition.md`
-(plus a dataset in `src/content/datasets/` if it needs one). No source file needs to change.
+(plus a dataset in `src/content/datasets/` if it needs one). A training lesson can use an existing
+registered adapter, landscape and compatible chart by specifying `kind: "training"`, its weight
+and rate parameter bindings, dimensions and presets; see the Optimization lesson JSON files for
+examples. New algorithms or landscapes require implementation and tests in the appropriate core
+and simulation layers. The content loader checks bindings and dimensions at startup.
 
 ## More
 
 - [Quickstart and manual checks](specs/001-lesson-framework-foundations/quickstart.md)
+- [Training playback verification and manual checks](specs/002-gradient-descent-playback/quickstart.md)
 - [Plan and architecture](specs/001-lesson-framework-foundations/plan.md)
 - [Test cases](specs/001-lesson-framework-foundations/test-cases.md)

@@ -84,6 +84,11 @@ export function createTrainingHistory(initial: TrainingSnapshot): TrainingHistor
   return Object.freeze({ activeBranchId: branch.id, branches: Object.freeze([branch]) })
 }
 
+export function selectTrainingBranch(history: TrainingHistory, branchId: string): TrainingHistory {
+  findBranch(history, branchId)
+  return Object.freeze({ activeBranchId: branchId, branches: history.branches })
+}
+
 export function appendTrainingStep(
   history: TrainingHistory,
   branchId: string,

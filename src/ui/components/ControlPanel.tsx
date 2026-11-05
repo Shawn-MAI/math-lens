@@ -1,11 +1,11 @@
 import { useId, useState } from 'react'
 import { decimalPlaces } from '../../core/numeric'
-import type { ChoiceParameter, Lesson, NumberParameter } from '../../sim/content/schema'
+import type { AnyLesson, ChoiceParameter, NumberParameter } from '../../sim/content/schema'
 import type { ParamValue, SetParamResult } from '../../sim/lessonStore'
 import { formatNumber } from '../../sim/template'
 
 interface ControlPanelProps {
-  lesson: Lesson
+  lesson: AnyLesson
   params: Record<string, ParamValue>
   messages: Record<string, string>
   setParam: (id: string, raw: ParamValue) => SetParamResult

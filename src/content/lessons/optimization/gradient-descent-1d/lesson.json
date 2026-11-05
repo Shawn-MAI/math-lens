@@ -1,0 +1,62 @@
+{
+  "kind": "training",
+  "id": "gradient-descent-1d",
+  "topic": "optimization",
+  "order": 1,
+  "title": "Gradient descent on a curve",
+  "summary": "Watch a weight move downhill and inspect each gradient descent step.",
+  "chart": { "type": "training-curve" },
+  "parameters": [
+    {
+      "type": "number",
+      "id": "w",
+      "label": "Weight",
+      "symbol": "w",
+      "min": -5,
+      "max": 5,
+      "step": 0.1,
+      "default": -4,
+      "control": "slider"
+    },
+    {
+      "type": "number",
+      "id": "rate",
+      "label": "Learning rate",
+      "symbol": "η",
+      "min": 0,
+      "max": 4,
+      "step": 0.0005,
+      "default": 0.2,
+      "control": "slider"
+    }
+  ],
+  "outputs": [{ "key": "loss", "label": "Loss", "symbol": "L", "decimals": 6 }],
+  "training": {
+    "adapter": "gradient-descent",
+    "landscape": "convex-1d",
+    "dimensions": 1,
+    "weightParameters": ["w"],
+    "rateParameter": "rate",
+    "presets": { "small": 0.0005, "good": 0.2, "large": 4 }
+  },
+  "formula": {
+    "latex": "L(w) = \\frac{1}{2}(w-2)^2, \\quad g = w-2, \\quad w' = w-\\eta g",
+    "symbols": [
+      { "symbol": "L", "meaning": "Loss: the height of the curve that we want to reduce." },
+      { "symbol": "w", "meaning": "Weight: the current position; w′ is the next position." },
+      { "symbol": "g", "meaning": "Gradient: the slope of the loss curve at the current weight." },
+      { "symbol": "\\eta", "meaning": "Learning rate: how strongly the gradient changes the weight." }
+    ]
+  },
+  "workedExample": [
+    {
+      "text": "At step {{step}}, the weight is {{weights[0]}} and the loss is {{loss}}.",
+      "latex": "L({{weights[0]}}) \\approx {{loss}}"
+    },
+    {
+      "text": "The gradient is {{gradient[0]}}. Using the learning rate {{rate}}, the next weight is approximately {{nextWeights[0]}}.",
+      "latex": "{{weights[0]}} - {{rate}} \\times \\left({{gradient[0]}}\\right) \\approx {{nextWeights[0]}}"
+    }
+  ],
+  "chartSummary": "At step {{step}}, weight {{weights[0]}} has loss {{loss}}."
+}

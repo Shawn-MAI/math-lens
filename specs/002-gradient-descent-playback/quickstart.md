@@ -74,3 +74,26 @@ See [UI contract](./contracts/lesson-and-ui.md).
 Verify the existing three Foundation lessons, list, dark mode, keyboard access, direct hash links
 and refresh-to-default still work. With five target learners, record whether at least four correctly
 explain the three learning-rate behaviors after using the presets; schedule this as a human study.
+
+## Validation record (2026-11-05)
+
+- `npm run lint`, `npm run typecheck`, `npm test` and `npm run build` passed: 54 test files and
+  505 tests. Vite warned that the minified JavaScript chunk exceeds 500 kB (1,116.20 kB,
+  339.36 kB gzip).
+- Automated axe scans covered all six lessons in both themes in jsdom, with color contrast
+  disabled because jsdom cannot calculate it. This is not a screen-reader or contrast check.
+- A desktop Chrome 156 session on macOS opened the 2D lesson, displayed real contours, switched
+  theme, and verified the first update `(4, 2) -> (3.4, -1)` and synchronized loss-history cursor.
+  At 1024, 1280 and 1920 CSS pixels the document had no horizontal page overflow; this is a
+  limited layout smoke check, not a complete overlap or tablet-device assessment. Timeline Home
+  navigation was also exercised with a keyboard event.
+- Exploratory timing used a real 1,001-state 2D history (one default-rate step followed by 999
+  small-rate steps), with 30 synthetic timeline input events per viewport and two animation frames
+  before checking the rendered cursor. Worst elapsed times were 20.9 ms at 1920×1080 and 20.5 ms
+  at 1024×768. Browser display refresh rate and physical hardware characteristics were not
+  established; these measurements are not a substitute for the required device-based
+  control-to-visible-paint and pointer-drag measurements.
+- **Pending**: physical desktop and tablet control-to-visible-update measurements including drag,
+  rendering traces and 60 fps verification; worker decision based on those measurements; full
+  keyboard, both-theme browser axe/contrast, layout, color-blind simulation and human screen-reader
+  checks; scheduling and conducting the five-learner study. No study has been scheduled or passed.

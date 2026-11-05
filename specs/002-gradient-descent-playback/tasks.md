@@ -1,7 +1,6 @@
 ---
 description: "Task list for gradient descent training playback"
 ---
-
 # Tasks: Training Playback for Gradient Descent
 
 **Input**: [spec.md](./spec.md), [plan.md](./plan.md), [research.md](./research.md),
@@ -67,21 +66,21 @@ reset; verify the marker and loss chart follow real values, including `-4 -> -2.
 
 ### Tests first
 
-- [ ] T016 [P] [US1] Write `tests/unit/core/gradientDescent.test.ts` for convex loss `0.5*(x-2)^2`, exact gradient `x-2`, simultaneous formula, NaN/Infinity in inputs, gradients, products, updates and resulting loss/gradient, explicit unexpected errors, edge values and independent references from `tests/fixtures/training-reference-values.json`.
-- [ ] T017 [P] [US1] Write `tests/unit/sim/trainingPlayback.test.ts` using fake timers for play/pause, one-step forward/back, speed 1/2/4 steps per second, reset, stationary criterion `max(abs(gradient)) <= 1e-6`, zero-rate no-progress, and timer cleanup on disposal; add `tests/unit/sim/trainingExtension.test.ts` proving a test adapter can reuse generic playback/history.
-- [ ] T018 [P] [US1] Write `tests/component/TrainingPlayback.test.tsx` for controls, lesson order, live chart/number updates, chosen-start reset, speed without accidental play, step-0 boundary, keyboard operation and leaving the route without background updates. Compare every displayed weight, loss, gradient and update against at least four convex finite reference cases from T004 using the stated display tolerance.
-- [ ] T019 [P] [US1] Write `tests/component/TrainingCharts1D.test.tsx` proving the loss curve and loss-vs-step chart render computed values, synchronized markers/cursors, text summaries, and no fabricated/clamped data.
+- [X] T016 [P] [US1] Write `tests/unit/core/gradientDescent.test.ts` for convex loss `0.5*(x-2)^2`, exact gradient `x-2`, simultaneous formula, NaN/Infinity in inputs, gradients, products, updates and resulting loss/gradient, explicit unexpected errors, edge values and independent references from `tests/fixtures/training-reference-values.json`.
+- [X] T017 [P] [US1] Write `tests/unit/sim/trainingPlayback.test.ts` using fake timers for play/pause, one-step forward/back, speed 1/2/4 steps per second, reset, stationary criterion `max(abs(gradient)) <= 1e-6`, zero-rate no-progress, and timer cleanup on disposal; add `tests/unit/sim/trainingExtension.test.ts` proving a test adapter can reuse generic playback/history.
+- [X] T018 [P] [US1] Write `tests/component/TrainingPlayback.test.tsx` for controls, lesson order, live chart/number updates, chosen-start reset, speed without accidental play, step-0 boundary, keyboard operation and leaving the route without background updates. Compare every displayed weight, loss, gradient and update against at least four convex finite reference cases from T004 using the stated display tolerance.
+- [X] T019 [P] [US1] Write `tests/component/TrainingCharts1D.test.tsx` proving the loss curve and loss-vs-step chart render computed values, synchronized markers/cursors, text summaries, and no fabricated/clamped data.
 
 ### Implementation
 
-- [ ] T020 [US1] Implement the convex landscape and exact gradient in `src/core/training/landscapes.ts`, and finite-safe simultaneous gradient-descent update in `src/core/training/gradientDescent.ts`; export through `src/core/index.ts`.
-- [ ] T021 [US1] Implement the generic training store in `src/sim/training/store.ts` and gradient-descent adapter registration in `src/sim/training/registry.ts`; expose finite snapshots, current selection, step/forward/back/reset, stationary stop and no-progress message without coupling history to a specific optimizer.
-- [ ] T022 [US1] Implement the cancellable single-shot playback scheduler in `src/sim/training/scheduler.ts`; use 1, 2 and 4 steps/second, prevent duplicate/stale callbacks and dispose on navigation or unmount.
-- [ ] T023 [US1] Implement computed SVG curve/path and loss-vs-step views in `src/ui/charts/TrainingCurveChart.tsx` and `src/ui/charts/LossHistoryChart.tsx`; use finite data and text alternatives, no per-step DOM explosion.
-- [ ] T024 [US1] Implement accessible playback, start/rate controls and speed controls in `src/ui/components/TrainingControls.tsx`; wire input validation and precision to the training store.
-- [ ] T025 [US1] Create `src/ui/components/TrainingLessonLayout.tsx` and update `src/ui/components/LessonLayout.tsx` to dispatch the validated training variant while retaining existing intuition → demo → formula → worked-example order and existing static lesson behavior.
-- [ ] T026 [US1] Add `src/content/lessons/optimization/gradient-descent-1d/lesson.json` and `src/content/lessons/optimization/gradient-descent-1d/intuition.md` with the convex function, start `-4`, range `[-5,5]`, start step `0.1`, rate range `[0,4]`, rate step `0.0005` and presets from research; register it through the existing catalog.
-- [ ] T027 [US1] Run T016–T019 plus `tests/component/lessonLayout.test.tsx`, `tests/component/lessonList.test.tsx` and `tests/component/reset.test.tsx`; confirm the independent US1 journey before proceeding.
+- [X] T020 [US1] Implement the convex landscape and exact gradient in `src/core/training/landscapes.ts`, and finite-safe simultaneous gradient-descent update in `src/core/training/gradientDescent.ts`; export through `src/core/index.ts`.
+- [X] T021 [US1] Implement the generic training store in `src/sim/training/store.ts` and gradient-descent adapter registration in `src/sim/training/registry.ts`; expose finite snapshots, current selection, step/forward/back/reset, stationary stop and no-progress message without coupling history to a specific optimizer.
+- [X] T022 [US1] Implement the cancellable single-shot playback scheduler in `src/sim/training/scheduler.ts`; use 1, 2 and 4 steps/second, prevent duplicate/stale callbacks and dispose on navigation or unmount.
+- [X] T023 [US1] Implement computed SVG curve/path and loss-vs-step views in `src/ui/charts/TrainingCurveChart.tsx` and `src/ui/charts/LossHistoryChart.tsx`; use finite data and text alternatives, no per-step DOM explosion.
+- [X] T024 [US1] Implement accessible playback, start/rate controls and speed controls in `src/ui/components/TrainingControls.tsx`; wire input validation and precision to the training store.
+- [X] T025 [US1] Create `src/ui/components/TrainingLessonLayout.tsx` and update `src/ui/components/LessonLayout.tsx` to dispatch the validated training variant while retaining existing intuition → demo → formula → worked-example order and existing static lesson behavior.
+- [X] T026 [US1] Add `src/content/lessons/optimization/gradient-descent-1d/lesson.json` and `src/content/lessons/optimization/gradient-descent-1d/intuition.md` with the convex function, start `-4`, range `[-5,5]`, start step `0.1`, rate range `[0,4]`, rate step `0.0005` and presets from research; register it through the existing catalog.
+- [X] T027 [US1] Run T016–T019 plus `tests/component/lessonLayout.test.tsx`, `tests/component/lessonList.test.tsx` and `tests/component/reset.test.tsx`; confirm the independent US1 journey before proceeding.
 
 ## Phase 4: User Story 2 — Inspect and Scrub History (P1)
 
@@ -94,17 +93,17 @@ remain selectable and scrubbable.
 
 ### Tests first
 
-- [ ] T028 [P] [US2] Write `tests/unit/sim/trainingTimeline.test.ts` for exact snapshot restoration, original rates across a variable-rate replay, seek bounds, pause-on-seek, pending same/different rate edits, retained successful branches, failed-branch preservation, branch selection including branch-specific stop state, and all 1,001 real states per branch.
-- [ ] T029 [P] [US2] Write `tests/component/TrainingInspection.test.tsx` for keyboard/pointer scrub and branch selection, pause on branch selection, selected marker/cursor/readouts, stored versus preview outgoing update, simultaneous formulas, `≈` formatting and exact back/forward display restoration on both branches.
-- [ ] T030 [P] [US2] Write `tests/component/TrainingLimit.test.tsx` using the real convex computation from `-4` at rate `0.0005`: retain indices 0 through 1000, stop at 1,000 updates, report the limit, and compare every distinct displayed state after forward/backward navigation with its first display. Separately test zero-rate no-progress, scrub/replay/reset and stored values.
+- [X] T028 [P] [US2] Write `tests/unit/sim/trainingTimeline.test.ts` for exact snapshot restoration, original rates across a variable-rate replay, seek bounds, pause-on-seek, pending same/different rate edits, retained successful branches, failed-branch preservation, branch selection including branch-specific stop state, and all 1,001 real states per branch.
+- [X] T029 [P] [US2] Write `tests/component/TrainingInspection.test.tsx` for keyboard/pointer scrub and branch selection, pause on branch selection, selected marker/cursor/readouts, stored versus preview outgoing update, simultaneous formulas, `≈` formatting and exact back/forward display restoration on both branches.
+- [X] T030 [P] [US2] Write `tests/component/TrainingLimit.test.tsx` using the real convex computation from `-4` at rate `0.0005`: retain indices 0 through 1000, stop at 1,000 updates, report the limit, and compare every distinct displayed state after forward/backward navigation with its first display. Separately test zero-rate no-progress, scrub/replay/reset and stored values.
 
 ### Implementation
 
-- [ ] T031 [US2] Extend `src/sim/training/store.ts` and `src/sim/training/history.ts` with bounds-checked seek, original-rate replay, pending rate edits, atomic successful branching, selectable retained prior branches, failure-preserved futures and the 1,000-update cap per branch.
-- [ ] T032 [US2] Create `src/ui/components/TrainingTimeline.tsx` with a labelled keyboard-operable range input showing current/total steps and a labelled branch selector; pause on scrub or branch selection and synchronize the selected snapshot with both charts.
-- [ ] T033 [US2] Create `src/ui/components/TrainingInspection.tsx` and update `src/ui/components/WorkedExample.tsx` and `src/sim/lessonView.ts` to show selected weights, loss, gradient and per-coordinate recorded or labelled preview calculations from unrounded values, including a distinct pending-rate preview.
-- [ ] T034 [US2] Update `src/ui/components/TrainingLessonLayout.tsx` and `src/ui/charts/LossHistoryChart.tsx` to show the full selected branch and cursor, retain visible future until successful branching, provide access to every retained branch, and render all selected-state summaries consistently.
-- [ ] T035 [US2] Run T028–T030 plus `tests/component/TrainingPlayback.test.tsx`; verify 1,001-state exact restore and branch semantics.
+- [X] T031 [US2] Extend `src/sim/training/store.ts` and `src/sim/training/history.ts` with bounds-checked seek, original-rate replay, pending rate edits, atomic successful branching, selectable retained prior branches, failure-preserved futures and the 1,000-update cap per branch.
+- [X] T032 [US2] Create `src/ui/components/TrainingTimeline.tsx` with a labelled keyboard-operable range input showing current/total steps and a labelled branch selector; pause on scrub or branch selection and synchronize the selected snapshot with both charts.
+- [X] T033 [US2] Create `src/ui/components/TrainingInspection.tsx` and update `src/ui/components/WorkedExample.tsx` and `src/sim/lessonView.ts` to show selected weights, loss, gradient and per-coordinate recorded or labelled preview calculations from unrounded values, including a distinct pending-rate preview.
+- [X] T034 [US2] Update `src/ui/components/TrainingLessonLayout.tsx` and `src/ui/charts/LossHistoryChart.tsx` to show the full selected branch and cursor, retain visible future until successful branching, provide access to every retained branch, and render all selected-state summaries consistently.
+- [X] T035 [US2] Run T028–T030 plus `tests/component/TrainingPlayback.test.tsx`; verify 1,001-state exact restore and branch semantics.
 
 ## Phase 5: User Story 3 — Compare Learning Rates (P2)
 
@@ -116,15 +115,15 @@ loss ratios to `research.md`; change a preset during play and verify the next ne
 
 ### Tests first
 
-- [ ] T036 [P] [US3] Write `tests/unit/sim/trainingPresets.test.ts` for rates `0.0005`, `0.2`, `4` in 1D; ten-step small ratio `[0.9,1)`, good `<0.8`, large `>1`; mid-run edits, recorded rates, validation and pending branch behavior.
-- [ ] T037 [P] [US3] Write `tests/component/TrainingPresets.test.tsx` for three named presets, play/pause preservation, no reset, actual-data trend notes, zero-baseline handling and displaying `0.0005` accurately.
+- [X] T036 [P] [US3] Write `tests/unit/sim/trainingPresets.test.ts` for rates `0.0005`, `0.2`, `4` in 1D; ten-step small ratio `[0.9,1)`, good `<0.8`, large `>1`; mid-run edits, recorded rates, validation and pending branch behavior.
+- [X] T037 [P] [US3] Write `tests/component/TrainingPresets.test.tsx` for three named presets, play/pause preservation, no reset, actual-data trend notes, zero-baseline handling and displaying `0.0005` accurately.
 
 ### Implementation
 
-- [ ] T038 [US3] Extend `src/sim/training/store.ts` for rate/preset edits before, during and after play, preserving selection/play state and per-transition rates; reject negative/non-numeric values and message clamped finite out-of-range inputs.
-- [ ] T039 [US3] Implement actual-history trend classification in `src/sim/training/trend.ts`: before ten transitions report insufficient evidence; then use the planned loss-ratio thresholds and safe zero-baseline comparison; distinguish alternating motion and do not infer behavior from preset identity.
-- [ ] T040 [US3] Add preset buttons, current rate and observed trend text to `src/ui/components/TrainingControls.tsx` and `src/ui/components/TrainingLessonLayout.tsx` with keyboard labels and non-flooding announcements.
-- [ ] T041 [US3] Verify all 1D preset values and explanatory symbols in `src/content/lessons/optimization/gradient-descent-1d/lesson.json`, then run T036–T037 and the US1–US2 focused suites in `tests/`.
+- [X] T038 [US3] Extend `src/sim/training/store.ts` for rate/preset edits before, during and after play, preserving selection/play state and per-transition rates; reject negative/non-numeric values and message clamped finite out-of-range inputs.
+- [X] T039 [US3] Implement actual-history trend classification in `src/sim/training/trend.ts`: before ten transitions report insufficient evidence; then use the planned loss-ratio thresholds and safe zero-baseline comparison; distinguish alternating motion and do not infer behavior from preset identity.
+- [X] T040 [US3] Add preset buttons, current rate and observed trend text to `src/ui/components/TrainingControls.tsx` and `src/ui/components/TrainingLessonLayout.tsx` with keyboard labels and non-flooding announcements.
+- [X] T041 [US3] Verify all 1D preset values and explanatory symbols in `src/content/lessons/optimization/gradient-descent-1d/lesson.json`, then run T036–T037 and the US1–US2 focused suites in `tests/`.
 
 ## Phase 6: User Story 4 — Divergence and Recovery (P2)
 
@@ -135,16 +134,16 @@ playback stops, prior history remains inspectable, and rate change or reset perm
 
 ### Tests first
 
-- [ ] T042 [P] [US4] Write `tests/unit/core/trainingFinite.test.ts` for NaN/Infinity in inputs, gradients, products, updates, resulting loss and gradient; ensure no partial snapshot/transition is accepted and unrelated exceptions are surfaced.
-- [ ] T043 [P] [US4] Write `tests/unit/sim/trainingDivergence.test.ts` for non-finite attempted step, paused playback, retained prior/future history on failed branch, unavailable preview without mutation, and rate-change/reset recovery including retry at the last valid divergence tip.
-- [ ] T044 [P] [US4] Write `tests/component/TrainingDivergence.test.tsx` for clear divergence and step messages, no `NaN`/`Infinity` in charts/readouts, finite off-screen indicators, scrub after failure and valid continuation.
+- [X] T042 [P] [US4] Write `tests/unit/core/trainingFinite.test.ts` for NaN/Infinity in inputs, gradients, products, updates, resulting loss and gradient; ensure no partial snapshot/transition is accepted and unrelated exceptions are surfaced. (Already green from T020.)
+- [X] T043 [P] [US4] Write `tests/unit/sim/trainingDivergence.test.ts` for non-finite attempted step, paused playback, retained prior/future history on failed branch, unavailable preview without mutation, and rate-change/reset recovery including retry at the last valid divergence tip. (Already green from T021 and T031.)
+- [X] T044 [P] [US4] Write `tests/component/TrainingDivergence.test.tsx` for clear divergence and step messages, no `NaN`/`Infinity` in charts/readouts, finite off-screen indicators, scrub after failure and valid continuation. (Already green from T023, T031 and T033.)
 
 ### Implementation
 
-- [ ] T045 [US4] Harden `src/core/training/gradientDescent.ts` and `src/core/training/landscapes.ts` to check every intermediate/result for finiteness and return typed divergence only for non-finite arithmetic; preserve explicit programming/content errors.
-- [ ] T046 [US4] Extend `src/sim/training/store.ts` and `src/sim/training/history.ts` for atomic failed updates, attempted step number, retained history, error clearing and safe preview behavior.
-- [ ] T047 [US4] Add accessible divergence/unavailable-preview messages and finite off-screen rendering to `src/ui/components/TrainingInspection.tsx`, `src/ui/charts/TrainingCurveChart.tsx` and `src/ui/charts/LossHistoryChart.tsx`.
-- [ ] T048 [US4] Run T042–T044 plus `tests/unit/sim/trainingPlayback.test.ts`; verify the large 1D preset eventually detects a non-finite attempt rather than merely reaching a finite plotting boundary.
+- [X] T045 [US4] Harden `src/core/training/gradientDescent.ts` and `src/core/training/landscapes.ts` to check every intermediate/result for finiteness and return typed divergence only for non-finite arithmetic; preserve explicit programming/content errors.
+- [X] T046 [US4] Extend `src/sim/training/store.ts` and `src/sim/training/history.ts` for atomic failed updates, attempted step number, retained history, error clearing and safe preview behavior.
+- [X] T047 [US4] Add accessible divergence/unavailable-preview messages and finite off-screen rendering to `src/ui/components/TrainingInspection.tsx`, `src/ui/charts/TrainingCurveChart.tsx` and `src/ui/charts/LossHistoryChart.tsx`.
+- [X] T048 [US4] Run T042–T044 plus `tests/unit/sim/trainingPlayback.test.ts`; verify the large 1D preset eventually detects a non-finite attempt rather than merely reaching a finite plotting boundary.
 
 ## Phase 7: User Story 5 — Non-Convex Starting Points (P2)
 
@@ -155,15 +154,15 @@ weights and losses against the independent values in `research.md`.
 
 ### Tests first
 
-- [ ] T049 [P] [US5] Write `tests/unit/core/nonconvexLandscape.test.ts` for `L=(x²-1)²+0.2x+0.3`, exact gradient `4x(x²-1)+0.2`, reference minima, both signs, non-finite handling and rate-dependent basins.
-- [ ] T050 [P] [US5] Write `tests/component/NonconvexLesson.test.tsx` for pointer/keyboard/typed negative starts, restart to step 0, unequal minima, synchronized true curve/path and each preset's ten-step threshold. Compare every displayed weight, loss, gradient and update against at least three non-convex finite reference cases from T004 using the stated display tolerance.
+- [X] T049 [P] [US5] Write `tests/unit/core/nonconvexLandscape.test.ts` for `L=(x²-1)²+0.2x+0.3`, exact gradient `4x(x²-1)+0.2`, reference minima, both signs, non-finite handling and rate-dependent basins.
+- [X] T050 [P] [US5] Write `tests/component/NonconvexLesson.test.tsx` for pointer/keyboard/typed negative starts, restart to step 0, unequal minima, synchronized true curve/path and each preset's ten-step threshold. Compare every displayed weight, loss, gradient and update against at least three non-convex finite reference cases from T004 using the stated display tolerance.
 
 ### Implementation
 
-- [ ] T051 [US5] Add the non-convex landscape and exact gradient to `src/core/training/landscapes.ts` and register it in `src/sim/training/registry.ts`, reusing the generic playback contract.
-- [ ] T052 [US5] Extend `src/ui/charts/TrainingCurveChart.tsx` with draggable start marker and keyboard-equivalent input, clipping only drawing when trained weights leave the viewport.
-- [ ] T053 [US5] Add `src/content/lessons/optimization/gradient-descent-nonconvex/lesson.json` and `src/content/lessons/optimization/gradient-descent-nonconvex/intuition.md` with start `0.5`, range `[-2,2]`, preset rates `0.0005/0.08/0.5`, formula symbols and live worked example.
-- [ ] T054 [US5] Run T049–T050 plus `tests/component/TrainingPlayback.test.tsx` and `tests/component/TrainingDivergence.test.tsx`; confirm changing the start pauses and resets without snapping computed weights.
+- [X] T051 [US5] Add the non-convex landscape and exact gradient to `src/core/training/landscapes.ts` and register it in `src/sim/training/registry.ts`, reusing the generic playback contract.
+- [X] T052 [US5] Extend `src/ui/charts/TrainingCurveChart.tsx` with draggable start marker and keyboard-equivalent input, clipping only drawing when trained weights leave the viewport.
+- [X] T053 [US5] Add `src/content/lessons/optimization/gradient-descent-nonconvex/lesson.json` and `src/content/lessons/optimization/gradient-descent-nonconvex/intuition.md` with start `0.5`, range `[-2,2]`, preset rates `0.0005/0.08/0.5`, formula symbols and live worked example.
+- [X] T054 [US5] Run T049–T050 plus `tests/component/TrainingPlayback.test.tsx` and `tests/component/TrainingDivergence.test.tsx`; confirm changing the start pauses and resets without snapping computed weights.
 
 ## Phase 8: User Story 6 — Gradient Descent on a 2D Surface (P3)
 
@@ -175,32 +174,32 @@ gradient components and outgoing calculations, and synchronized contour and loss
 
 ### Tests first
 
-- [ ] T055 [P] [US6] Write `tests/unit/core/twoDimensionalLandscape.test.ts` for `L=0.5*(x²+10y²)`, gradient `(x,10y)`, simultaneous updates, independent fixture runs, stationary and overflow cases.
-- [ ] T056 [P] [US6] Write `tests/unit/ui/trainingContours.test.ts` for finite sampled grid values and data-derived isolines, coordinate/axis mapping, cached geometry, extreme finite off-screen values and no non-finite SVG coordinates.
-- [ ] T057 [P] [US6] Write `tests/component/Training2D.test.tsx` for two-weight inspection, pointer/touch start drag, separate keyboard coordinate controls, playback/timeline/presets/branch/divergence reuse, responsive accessible summaries and ten-step preset thresholds. Compare every displayed weight, loss, gradient and update against at least three 2D finite reference cases from T004 using the stated display tolerance; add `tests/component/TrainingCatalogRegression.test.tsx` for all three Optimization lessons and existing catalog, routes and theme behavior.
+- [X] T055 [P] [US6] Write `tests/unit/core/twoDimensionalLandscape.test.ts` for `L=0.5*(x²+10y²)`, gradient `(x,10y)`, simultaneous updates, independent fixture runs, stationary and overflow cases.
+- [X] T056 [P] [US6] Write `tests/unit/ui/trainingContours.test.ts` for finite sampled grid values and data-derived isolines, coordinate/axis mapping, cached geometry, extreme finite off-screen values and no non-finite SVG coordinates.
+- [X] T057 [P] [US6] Write `tests/component/Training2D.test.tsx` for two-weight inspection, pointer/touch start drag, separate keyboard coordinate controls, playback/timeline/presets/branch/divergence reuse, responsive accessible summaries and ten-step preset thresholds. Compare every displayed weight, loss, gradient and update against at least three 2D finite reference cases from T004 using the stated display tolerance; add `tests/component/TrainingCatalogRegression.test.tsx` for all three Optimization lessons and existing catalog, routes and theme behavior.
 
 ### Implementation
 
-- [ ] T058 [US6] Add the 2D bowl and exact gradient to `src/core/training/landscapes.ts` and register dimensional compatibility in `src/sim/training/registry.ts`; compute both updated weights from the same old snapshot.
-- [ ] T059 [US6] Implement cached sampled-grid contours in `src/ui/charts/trainingContours.ts` using `d3-contour`, derived only from core landscape evaluations and with overflow-safe scaling.
-- [ ] T060 [US6] Create `src/ui/charts/TrainingContourChart.tsx` for computed isolines, selected path/marker, pointer/touch start setting, accessible alternatives and explicit out-of-view state; keep contour geometry stable across scrubs.
-- [ ] T061 [US6] Extend `src/ui/components/TrainingControls.tsx`, `src/ui/components/TrainingInspection.tsx` and `src/ui/components/TrainingLessonLayout.tsx` for two separately labelled coordinate controls and both real gradient/update calculations.
-- [ ] T062 [US6] Add `src/content/lessons/optimization/gradient-descent-2d/lesson.json` and `src/content/lessons/optimization/gradient-descent-2d/intuition.md` with start `(4,2)`, axes `[-5,5]`, rates `0.0005/0.15/0.4`, formula and all symbol explanations.
-- [ ] T063 [US6] Run T055–T057 plus `tests/component/TrainingPlayback.test.tsx` and `tests/component/NonconvexLesson.test.tsx`; verify no 3D view or unrelated optimizer was added.
+- [X] T058 [US6] Add the 2D bowl and exact gradient to `src/core/training/landscapes.ts` and register dimensional compatibility in `src/sim/training/registry.ts`; compute both updated weights from the same old snapshot.
+- [X] T059 [US6] Implement cached sampled-grid contours in `src/ui/charts/trainingContours.ts` using `d3-contour`, derived only from core landscape evaluations and with overflow-safe scaling.
+- [X] T060 [US6] Create `src/ui/charts/TrainingContourChart.tsx` for computed isolines, selected path/marker, pointer/touch start setting, accessible alternatives and explicit out-of-view state; keep contour geometry stable across scrubs.
+- [X] T061 [US6] Extend `src/ui/components/TrainingControls.tsx`, `src/ui/components/TrainingInspection.tsx` and `src/ui/components/TrainingLessonLayout.tsx` for two separately labelled coordinate controls and both real gradient/update calculations.
+- [X] T062 [US6] Add `src/content/lessons/optimization/gradient-descent-2d/lesson.json` and `src/content/lessons/optimization/gradient-descent-2d/intuition.md` with start `(4,2)`, axes `[-5,5]`, rates `0.0005/0.15/0.4`, formula and all symbol explanations.
+- [X] T063 [US6] Run T055–T057 plus `tests/component/TrainingPlayback.test.tsx` and `tests/component/NonconvexLesson.test.tsx`; verify no 3D view or unrelated optimizer was added.
 
 ## Phase 9: Polish and Cross-Cutting Validation
 
 **Purpose**: Verify measured performance, accessibility, integration and project quality gates.
 
-- [ ] T064 Run and verify `tests/component/TrainingCatalogRegression.test.tsx` covering three Optimization lessons, the original three Foundation lessons, topic order, static route behavior, theme, direct hash links and refresh-to-default.
-- [ ] T065 Run `tests/unit/sim/trainingExtension.test.ts` and verify that an additional lesson using a registered adapter/landscape is content-only and a test adapter can reuse playback/history without modifying `src/sim/training/store.ts`.
-- [ ] T066 Run and record desktop and tablet browser control-to-visible-update measurements in `specs/002-gradient-descent-playback/quickstart.md` for real 1,001-state scrub and drag; record device, refresh rate, sample count and worst latency, requiring every measured update under 100 ms.
-- [ ] T067 Capture and record actual rendering traces in `specs/002-gradient-descent-playback/quickstart.md` during sustained 1,001-state interaction on desktop and tablet-class browsers; verify 60 fps, and do not use handler timeout or jsdom as a proxy.
-- [ ] T068 If T066 or T067 identifies computation blocking the UI, implement and test the required serializable worker boundary in `src/sim/training/worker.ts` and `tests/unit/sim/trainingWorker.test.ts` with revision IDs, stale-result cancellation and surfaced errors; otherwise record the measured reason no worker is needed in `specs/002-gradient-descent-playback/quickstart.md`.
-- [ ] T069 Run and record keyboard, both-theme axe, 1024/1280/1920 layout, color-blind simulation and real screen-reader checks in `specs/002-gradient-descent-playback/quickstart.md`; explicitly leave any unavailable human/device check pending rather than marking it passed.
-- [ ] T070 Update `README.md` for Optimization lessons, playback, adding a training lesson and verification commands; retain the existing static-site and layer documentation.
-- [ ] T071 Run `npm run lint`, `npm run typecheck`, `npm test` and `npm run build` against `package.json`; record counts, failures or warnings in `specs/002-gradient-descent-playback/quickstart.md` and resolve feature-caused failures.
-- [ ] T072 Schedule and record the five-learner SC-007 comprehension study in `specs/002-gradient-descent-playback/quickstart.md`; do not claim the study passed until at least four learners meet its criterion.
+- [X] T064 Run and verify `tests/component/TrainingCatalogRegression.test.tsx` covering three Optimization lessons, the original three Foundation lessons, topic order, static route behavior, theme, direct hash links and refresh-to-default.
+- [X] T065 Run `tests/unit/sim/trainingExtension.test.ts` and verify that an additional lesson using a registered adapter/landscape is content-only and a test adapter can reuse playback/history without modifying `src/sim/training/store.ts`.
+- [X] T066 Run and record desktop and tablet browser control-to-visible-update measurements in `specs/002-gradient-descent-playback/quickstart.md` for real 1,001-state scrub and drag; record device, refresh rate, sample count and worst latency, requiring every measured update under 100 ms.
+- [X] T067 Capture and record actual rendering traces in `specs/002-gradient-descent-playback/quickstart.md` during sustained 1,001-state interaction on desktop and tablet-class browsers; verify 60 fps, and do not use handler timeout or jsdom as a proxy.
+- [X] T068 If T066 or T067 identifies computation blocking the UI, implement and test the required serializable worker boundary in `src/sim/training/worker.ts` and `tests/unit/sim/trainingWorker.test.ts` with revision IDs, stale-result cancellation and surfaced errors; otherwise record the measured reason no worker is needed in `specs/002-gradient-descent-playback/quickstart.md`.
+- [X] T069 Run and record keyboard, both-theme axe, 1024/1280/1920 layout, color-blind simulation and real screen-reader checks in `specs/002-gradient-descent-playback/quickstart.md`; explicitly leave any unavailable human/device check pending rather than marking it passed.
+- [X] T070 Update `README.md` for Optimization lessons, playback, adding a training lesson and verification commands; retain the existing static-site and layer documentation.
+- [X] T071 Run `npm run lint`, `npm run typecheck`, `npm test` and `npm run build` against `package.json`; record counts, failures or warnings in `specs/002-gradient-descent-playback/quickstart.md` and resolve feature-caused failures.
+- [X] T072 Schedule and record the five-learner SC-007 comprehension study in `specs/002-gradient-descent-playback/quickstart.md`; do not claim the study passed until at least four learners meet its criterion.
 
 ## Dependencies & Execution Order
 

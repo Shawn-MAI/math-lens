@@ -226,14 +226,14 @@ alternatives for every chart. Colour is never the only carrier of information.
 
 ### Tests for User Story 5 (write first, they MUST fail)
 
-- [ ] T070 [P] [US5] Write `tests/component/keyboardAccess.test.tsx`: D-19 (tab order in a lesson follows reading order: header, intuition, chart handles/controls, reset, formula) and D-20 (all controls in all three lessons reachable and operable using keyboard only)
-- [ ] T071 [P] [US5] Write `tests/component/accessibility.test.tsx`: D-21 (vitest-axe scan of the list, each lesson and the not-found page, in both themes, no critical violations)
-- [ ] T072 [P] [US5] Write `tests/component/chartAlternatives.test.tsx`: D-22 (each chart has a visible text summary that updates when a parameter changes, and the chart has `role="img"` with an accessible name) and D-24 (the tangent is dashed, errors have text labels, points are filled markers, so no information relies on colour alone)
+- [X] T070 [P] [US5] Write `tests/component/keyboardAccess.test.tsx`: D-19 (tab order in a lesson follows reading order: header, intuition, chart handles/controls, reset, formula) and D-20 (all controls in all three lessons reachable and operable using keyboard only)
+- [X] T071 [P] [US5] Write `tests/component/accessibility.test.tsx`: D-21 (vitest-axe scan of the list, each lesson and the not-found page, in both themes, no critical violations)
+- [X] T072 [P] [US5] Write `tests/component/chartAlternatives.test.tsx`: D-22 (each chart has a visible text summary that updates when a parameter changes, and the chart has `role="img"` with an accessible name) and D-24 (the tangent is dashed, errors have text labels, points are filled markers, so no information relies on colour alone)
 
 ### Implementation for User Story 5
 
-- [ ] T073 [P] [US5] Add a visible `:focus-visible` indicator for all interactive elements, including SVG slider handles, to `src/ui/styles/app.css`, with sufficient contrast in both themes
-- [ ] T074 [US5] Audit and fix accessible names, roles and DOM order in `src/ui/components/ControlPanel.tsx`, `src/ui/components/ChartPanel.tsx`, `src/ui/components/LessonLayout.tsx`, `src/ui/charts/SliderHandle.tsx`, `src/ui/charts/CurveTangentChart.tsx` and `src/ui/charts/LineFitChart.tsx` until T070, T071 and T072 pass. Do not add features that no lesson needs (skip links, shortcuts)
+- [X] T073 [P] [US5] Add a visible `:focus-visible` indicator for all interactive elements, including SVG slider handles, to `src/ui/styles/app.css`, with sufficient contrast in both themes
+- [X] T074 [US5] Audit and fix accessible names, roles and DOM order in `src/ui/components/ControlPanel.tsx`, `src/ui/components/ChartPanel.tsx`, `src/ui/components/LessonLayout.tsx`, `src/ui/charts/SliderHandle.tsx`, `src/ui/charts/CurveTangentChart.tsx` and `src/ui/charts/LineFitChart.tsx` until T070, T071 and T072 pass. Do not add features that no lesson needs (skip links, shortcuts)
 
 **Checkpoint**: T070 to T072 pass and SC-005 (keyboard only) holds for all three lessons.
 

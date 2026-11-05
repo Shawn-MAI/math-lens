@@ -16,9 +16,9 @@ export function FormulaBlock({ formula }: { formula: Formula }) {
         <tbody>
           {formula.symbols.map((s) => (
             <tr key={s.symbol}>
-              <th scope="row">
+              <td>
                 <Math latex={s.symbol} />
-              </th>
+              </td>
               <td>{s.meaning}</td>
             </tr>
           ))}

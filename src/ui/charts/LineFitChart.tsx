@@ -47,20 +47,6 @@ export function LineFitChart({ params, outputs, dataset = [], options, setParam,
         handles && (
           <>
             <SliderHandle
-              label={`${interceptParam.label} (chart handle)`}
-              value={intercept}
-              min={interceptParam.min}
-              max={interceptParam.max}
-              step={interceptParam.step}
-              valueText={formatNumber(intercept, 1)}
-              axis="y"
-              cx={interceptX}
-              cy={interceptY}
-              svgRef={overlayRef}
-              fromPointer={(_, sy) => scales.y.invert(sy)}
-              onChange={(value) => setParam(interceptParam.id, value)}
-            />
-            <SliderHandle
               label={`${slopeParam.label} (chart handle)`}
               value={slope}
               min={slopeParam.min}
@@ -74,6 +60,20 @@ export function LineFitChart({ params, outputs, dataset = [], options, setParam,
               // The line pivots around its height at x = 0, which stays fixed.
               fromPointer={(_, sy) => (scales.y.invert(sy) - intercept) / xEnd}
               onChange={(value) => setParam(slopeParam.id, value)}
+            />
+            <SliderHandle
+              label={`${interceptParam.label} (chart handle)`}
+              value={intercept}
+              min={interceptParam.min}
+              max={interceptParam.max}
+              step={interceptParam.step}
+              valueText={formatNumber(intercept, 1)}
+              axis="y"
+              cx={interceptX}
+              cy={interceptY}
+              svgRef={overlayRef}
+              fromPointer={(_, sy) => scales.y.invert(sy)}
+              onChange={(value) => setParam(interceptParam.id, value)}
             />
           </>
         )

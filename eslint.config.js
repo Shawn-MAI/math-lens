@@ -7,7 +7,7 @@ const frameworkPackages = ['react', 'react-dom', 'react-dom/*', 'react-router-do
 const upperLayers = ['**/sim', '**/sim/**', '**/ui', '**/ui/**']
 
 export default tseslint.config(
-  { ignores: ['dist/', 'coverage/', 'node_modules/', '.specify/', '.github/'] },
+  { ignores: ['dist/', 'build/', 'coverage/', 'node_modules/', '**/*.min.js', '.specify/', '.github/'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

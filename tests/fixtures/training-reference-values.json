@@ -1,0 +1,113 @@
+{
+  "provenance": "Hand substitution into the independently specified loss and gradient formulas, using exact decimal arithmetic before conversion to JSON numbers. See specs/002-gradient-descent-playback/test-cases.md.",
+  "tolerance": {
+    "absolute": 1e-10,
+    "relative": 1e-10
+  },
+  "cases": [
+    {
+      "id": "N01",
+      "landscape": "convex-1d",
+      "rate": 0.2,
+      "start": { "weights": [-4], "loss": 18, "gradient": [-6] },
+      "transition": { "update": [1.2], "weights": [-2.8] },
+      "result": { "weights": [-2.8], "loss": 11.52, "gradient": [-4.8] }
+    },
+    {
+      "id": "N02",
+      "landscape": "convex-1d",
+      "rate": 0.5,
+      "start": { "weights": [0], "loss": 2, "gradient": [-2] },
+      "transition": { "update": [1], "weights": [1] },
+      "result": { "weights": [1], "loss": 0.5, "gradient": [-1] }
+    },
+    {
+      "id": "N03",
+      "landscape": "convex-1d",
+      "rate": 0.5,
+      "start": { "weights": [4], "loss": 2, "gradient": [2] },
+      "transition": { "update": [-1], "weights": [3] },
+      "result": { "weights": [3], "loss": 0.5, "gradient": [1] }
+    },
+    {
+      "id": "N04",
+      "landscape": "convex-1d",
+      "rate": 0.2,
+      "stationary": true,
+      "start": { "weights": [2], "loss": 0, "gradient": [0] },
+      "transition": { "update": [0], "weights": [2] },
+      "result": { "weights": [2], "loss": 0, "gradient": [0] }
+    },
+    {
+      "id": "N05",
+      "landscape": "nonconvex-1d",
+      "rate": 0.1,
+      "start": { "weights": [-1], "loss": 0.1, "gradient": [0.2] },
+      "transition": { "update": [-0.02], "weights": [-1.02] },
+      "result": { "weights": [-1.02], "loss": 0.09763216, "gradient": [0.035168] }
+    },
+    {
+      "id": "N06",
+      "landscape": "nonconvex-1d",
+      "rate": 0.1,
+      "start": { "weights": [0], "loss": 1.3, "gradient": [0.2] },
+      "transition": { "update": [-0.02], "weights": [-0.02] },
+      "result": { "weights": [-0.02], "loss": 1.29520016, "gradient": [0.279968] }
+    },
+    {
+      "id": "N07",
+      "landscape": "nonconvex-1d",
+      "rate": 0.1,
+      "start": { "weights": [1], "loss": 0.5, "gradient": [0.2] },
+      "transition": { "update": [-0.02], "weights": [0.98] },
+      "result": { "weights": [0.98], "loss": 0.49756816, "gradient": [0.044768] }
+    },
+    {
+      "id": "N08",
+      "landscape": "convex-2d",
+      "rate": 0.15,
+      "start": { "weights": [4, 2], "loss": 28, "gradient": [4, 20] },
+      "transition": { "update": [-0.6, -3], "weights": [3.4, -1] },
+      "result": { "weights": [3.4, -1], "loss": 10.78, "gradient": [3.4, -10] }
+    },
+    {
+      "id": "N09",
+      "landscape": "convex-2d",
+      "rate": 0.1,
+      "start": { "weights": [1, -1], "loss": 5.5, "gradient": [1, -10] },
+      "transition": { "update": [-0.1, 1], "weights": [0.9, 0] },
+      "result": { "weights": [0.9, 0], "loss": 0.405, "gradient": [0.9, 0] }
+    },
+    {
+      "id": "N10",
+      "landscape": "convex-2d",
+      "rate": 0.1,
+      "start": { "weights": [-2, 1], "loss": 7, "gradient": [-2, 10] },
+      "transition": { "update": [0.2, -1], "weights": [-1.8, 0] },
+      "result": { "weights": [-1.8, 0], "loss": 1.62, "gradient": [-1.8, 0] }
+    }
+  ],
+  "changingRateRun": {
+    "landscape": "convex-1d",
+    "start": { "weights": [-4], "loss": 18, "gradient": [-6] },
+    "steps": [
+      {
+        "rate": 0.2,
+        "update": [1.2],
+        "result": { "weights": [-2.8], "loss": 11.52, "gradient": [-4.8] }
+      },
+      {
+        "rate": 0.5,
+        "update": [2.4],
+        "result": { "weights": [-0.4], "loss": 2.88, "gradient": [-2.4] }
+      }
+    ]
+  },
+  "overflowBoundary": {
+    "landscape": "convex-1d",
+    "start": { "weights": [1e154], "loss": 5e307, "gradient": [1e154] },
+    "rate": 4,
+    "attemptedWeights": [-3e154],
+    "outcome": "non-finite resulting loss"
+  }
+}

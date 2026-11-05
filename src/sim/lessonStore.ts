@@ -2,7 +2,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla'
 import { clamp, snapToStep } from '../core'
 import type { ModelOutput, Point } from '../core'
 import { getDataset } from './content/loader'
-import type { Lesson, NumberParameter } from './content/schema'
+import { isTrainingLesson, type AnyLesson, type Lesson, type NumberParameter } from './content/schema'
 import { formatNumber } from './template'
 import { getModel } from './models'
 
@@ -43,7 +43,8 @@ function computeOutputs(lesson: Lesson, params: Record<string, ParamValue>, data
  * Creates the state of one open lesson: current parameters and the outputs computed from them.
  * Outputs are recomputed synchronously on every change, so numbers and chart never disagree.
  */
-export function createLessonStore(lesson: Lesson): LessonStore {
+export function createLessonStore(lesson: AnyLesson): LessonStore {
+  if (isTrainingLesson(lesson)) throw new Error(`Training lesson "${lesson.id}" requires a training store`)
   const dataset = lesson.datasetId ? getDataset(lesson.datasetId)?.points : undefined
   const defaults = Object.fromEntries(lesson.parameters.map((p) => [p.id, p.default])) as Record<string, ParamValue>
 

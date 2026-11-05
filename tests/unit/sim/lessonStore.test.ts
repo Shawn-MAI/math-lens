@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { getModel } from '../../../src/sim/models'
 import { getDataset, getLesson } from '../../../src/sim/content/loader'
 import { createLessonStore } from '../../../src/sim/lessonStore'
-import type { Lesson } from '../../../src/sim/content/schema'
+import { isTrainingLesson, type Lesson } from '../../../src/sim/content/schema'
 
 function lessonById(id: string): Lesson {
   const lesson = getLesson(id)
-  if (!lesson) throw new Error(`missing lesson ${id}`)
+  if (!lesson || isTrainingLesson(lesson)) throw new Error(`missing static lesson ${id}`)
   return lesson
 }
 

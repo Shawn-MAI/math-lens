@@ -71,21 +71,25 @@ function variantOf<T extends z.ZodType>(schema: T) {
   return z.union([schema, z.strictObject({ variantBy: z.string().min(1), variants: z.record(z.string(), schema) })])
 }
 
-export const lessonSchema = z
+const lessonFields = {
+  id: z.string().regex(kebab),
+  topic: z.enum(TOPIC_IDS),
+  order: z.number().int().min(1),
+  title: z.string().min(1).max(60),
+  summary: z.string().min(1).max(160),
+  chart: z.strictObject({ type: z.string().min(1), options: z.record(z.string(), z.unknown()).optional() }),
+  parameters: z.array(parameter).min(1),
+  outputs: z.array(outputSpec).min(1),
+  formula: variantOf(formula),
+  workedExample: variantOf(z.array(workedStep).min(1)),
+  chartSummary: variantOf(z.string().min(1)),
+}
+
+export const staticLessonSchema = z
   .strictObject({
-    id: z.string().regex(kebab),
-    topic: z.enum(TOPIC_IDS),
-    order: z.number().int().min(1),
-    title: z.string().min(1).max(60),
-    summary: z.string().min(1).max(160),
+    ...lessonFields,
     model: z.strictObject({ id: z.string().min(1), bind: z.record(z.string(), z.string()).optional() }),
     datasetId: z.string().regex(kebab).optional(),
-    chart: z.strictObject({ type: z.string().min(1), options: z.record(z.string(), z.unknown()).optional() }),
-    parameters: z.array(parameter).min(1),
-    outputs: z.array(outputSpec).min(1),
-    formula: variantOf(formula),
-    workedExample: variantOf(z.array(workedStep).min(1)),
-    chartSummary: variantOf(z.string().min(1)),
   })
   .superRefine((lesson, ctx) => {
     const ids = lesson.parameters.map((p) => p.id)
@@ -93,6 +97,42 @@ export const lessonSchema = z
       ctx.addIssue({ code: 'custom', path: ['parameters'], message: 'parameter ids must be unique' })
     }
   })
+
+export const trainingLessonSchema = z
+  .strictObject({
+    ...lessonFields,
+    kind: z.literal('training'),
+    training: z.strictObject({
+      adapter: z.string().min(1),
+      landscape: z.string().min(1),
+      dimensions: z.union([z.literal(1), z.literal(2)]),
+      weightParameters: z.array(z.string().regex(parameterId)).min(1).max(2),
+      rateParameter: z.string().regex(parameterId),
+      presets: z.strictObject({ small: z.number(), good: z.number(), large: z.number() }),
+    }),
+  })
+  .superRefine((lesson, ctx) => {
+    const ids = lesson.parameters.map((p) => p.id)
+    if (new Set(ids).size !== ids.length) {
+      ctx.addIssue({ code: 'custom', path: ['parameters'], message: 'parameter ids must be unique' })
+    }
+    if (lesson.training.weightParameters.length !== lesson.training.dimensions
+      || new Set(lesson.training.weightParameters).size !== lesson.training.weightParameters.length) {
+      ctx.addIssue({ code: 'custom', path: ['training', 'weightParameters'], message: 'unique weight parameters must match dimensions' })
+    }
+    const rate = lesson.parameters.find((p) => p.id === lesson.training.rateParameter)
+    if (rate?.type !== 'number') return
+    if (rate.min < 0) {
+      ctx.addIssue({ code: 'custom', path: ['training', 'rateParameter'], message: 'learning rate range must be non-negative' })
+    }
+    for (const [name, value] of Object.entries(lesson.training.presets)) {
+      if (value < rate.min || value > rate.max || !isOnGrid(value, rate.step, rate.min)) {
+        ctx.addIssue({ code: 'custom', path: ['training', 'presets', name], message: 'preset must be in range and on the learning-rate grid' })
+      }
+    }
+  })
+
+export const lessonSchema = z.union([staticLessonSchema, trainingLessonSchema])
 
 export const datasetSchema = z.strictObject({
   id: z.string().regex(kebab),
@@ -103,7 +143,8 @@ export const datasetSchema = z.strictObject({
     .max(10),
 })
 
-export type LessonJson = z.infer<typeof lessonSchema>
+export type LessonJson = z.infer<typeof staticLessonSchema>
+export type TrainingLessonJson = z.infer<typeof trainingLessonSchema>
 export type Dataset = z.infer<typeof datasetSchema>
 export type Parameter = LessonJson['parameters'][number]
 export type NumberParameter = z.infer<typeof numberParameter>
@@ -112,3 +153,9 @@ export type OutputSpec = z.infer<typeof outputSpec>
 export type Formula = z.infer<typeof formula>
 export type WorkedStep = z.infer<typeof workedStep>
 export type Lesson = LessonJson & { intuition: string }
+export type TrainingLesson = TrainingLessonJson & { intuition: string }
+export type AnyLesson = Lesson | TrainingLesson
+
+export function isTrainingLesson(lesson: AnyLesson): lesson is TrainingLesson {
+  return 'kind' in lesson && lesson.kind === 'training'
+}

@@ -10,7 +10,8 @@ description: "Task list for gradient descent training playback"
 **Tests are required**: Constitution Principle V requires a complete test-case inventory and
 explicit user approval **before implementation begins**. For each phase, write the approved tests
 first and demonstrate the relevant behavior fails before implementing it. Present the applicable
-test cases for explicit approval before implementing each task. If an earlier, already
+test cases for explicit approval before implementing each task; the user authorized automatic
+approval for the listed cases on 2026-11-05. If an earlier, already
 tested shared task legitimately satisfies a later test, record that it was already green rather
 than deliberately breaking working behavior. Run the smallest relevant tests after each
 implementation task; do not mark a failing or unverified task complete. Numerical
@@ -24,10 +25,10 @@ story phases. Paths are relative to the repository root.
 
 **Purpose**: Establish test-first approval and independent numerical references.
 
-- [ ] T001 Create `specs/002-gradient-descent-playback/test-cases.md` with identifiable, expected-result cases for every task and FR/SC: all three landscapes, ≥10 independent reference runs and their displayed values, validation, replay/selectable retained branches, overflow/preview, 1,001 distinct states, charts, accessibility, performance and regressions; include the tolerances and hand values in `specs/002-gradient-descent-playback/research.md` and `specs/002-gradient-descent-playback/quickstart.md`.
-- [ ] T002 Present `specs/002-gradient-descent-playback/test-cases.md` to the user and obtain explicit approval before any implementation or dependency change; record approval in that file. Stop if approval is withheld.
-- [ ] T003 Add runtime `d3-contour` and matching `@types/d3-contour` development dependency to `package.json` and update `package-lock.json` with the package manager; run the existing dependency and build checks after the manifest change.
-- [ ] T004 Create `tests/fixtures/training-reference-values.json` with at least 10 independently hand- or NumPy-calculated runs for all landscapes, including at least four 1D convex, three non-convex and three 2D finite display-ready cases reachable through lesson controls; cover both signs, simultaneous 2D updates, changing rates, stationary and finite overflow boundary cases. Record provenance and `1e-10 + 1e-10 * abs(reference)` core tolerance alongside the fixtures.
+- [X] T001 Create `specs/002-gradient-descent-playback/test-cases.md` with identifiable, expected-result cases for every task and FR/SC: all three landscapes, ≥10 independent reference runs and their displayed values, validation, replay/selectable retained branches, overflow/preview, 1,001 distinct states, charts, accessibility, performance and regressions; include the tolerances and hand values in `specs/002-gradient-descent-playback/research.md` and `specs/002-gradient-descent-playback/quickstart.md`.
+- [X] T002 Present `specs/002-gradient-descent-playback/test-cases.md` to the user and obtain explicit approval before any implementation or dependency change; record approval in that file. Stop if approval is withheld.
+- [X] T003 Add runtime `d3-contour` and matching `@types/d3-contour` development dependency to `package.json` and update `package-lock.json` with the package manager; run the existing dependency and build checks after the manifest change.
+- [X] T004 Create `tests/fixtures/training-reference-values.json` with at least 10 independently hand- or NumPy-calculated runs for all landscapes, including at least four 1D convex, three non-convex and three 2D finite display-ready cases reachable through lesson controls; cover both signs, simultaneous 2D updates, changing rates, stationary and finite overflow boundary cases. Record provenance and `1e-10 + 1e-10 * abs(reference)` core tolerance alongside the fixtures.
 
 **Checkpoint**: Approval is recorded; no implementation began before approval.
 
@@ -38,21 +39,21 @@ shared by all stories. These tasks block the story phases.
 
 ### Tests first
 
-- [ ] T005 [P] Write `tests/unit/core/trainingTypes.test.ts` for the foundational adapter/landscape contract and dimensional compatibility using a test-only adapter; assert core imports no UI, state, timer or DOM dependencies. Actual gradient-descent behavior is tested first in T016.
-- [ ] T006 [P] Write `tests/unit/sim/trainingHistory.test.ts` for the invariants “Index `0..1000`; immutable finite weights, finite loss and finite gradient at those weights”, “`snapshots.length = transitions.length + 1`”, and “at most 1,001 snapshots and 1,000 transitions per branch”, including exact stored rates, retained branches and no rounding.
-- [ ] T007 [P] Write `tests/unit/content/trainingSchema.test.ts` for the training discriminator and unchanged static lessons, injecting test-only registered adapters/landscapes; exercise invalid dimensions, duplicated IDs, non-finite/invalid ranges, grid defaults/presets, negative rate, missing bindings/symbols and unknown adapter/landscape/chart with explicit errors.
-- [ ] T008 [P] Write `tests/unit/sim/trainingFormat.test.ts` for six decimals in the planned magnitude range, scientific notation outside it, negative zero, real unrounded operands, `≈` equations, precision bounds, and the `0.0005` rate not displaying as zero.
-- [ ] T073 [P] Write `tests/component/ControlPanelPrecision.test.tsx` before T014 to verify a fine-precision parameter shows `0.0005`, preserves existing controls and connects parameter changes to the chart; run it and observe the precision assertion fail before implementing T014.
+- [X] T005 [P] Write `tests/unit/core/trainingTypes.test.ts` for the foundational adapter/landscape contract and dimensional compatibility using a test-only adapter; assert core imports no UI, state, timer or DOM dependencies. Actual gradient-descent behavior is tested first in T016.
+- [X] T006 [P] Write `tests/unit/sim/trainingHistory.test.ts` for the invariants “Index `0..1000`; immutable finite weights, finite loss and finite gradient at those weights”, “`snapshots.length = transitions.length + 1`”, and “at most 1,001 snapshots and 1,000 transitions per branch”, including exact stored rates, retained branches and no rounding.
+- [X] T007 [P] Write `tests/unit/content/trainingSchema.test.ts` for the training discriminator and unchanged static lessons, injecting test-only registered adapters/landscapes; exercise invalid dimensions, duplicated IDs, non-finite/invalid ranges, grid defaults/presets, negative rate, missing bindings/symbols and unknown adapter/landscape/chart with explicit errors.
+- [X] T008 [P] Write `tests/unit/sim/trainingFormat.test.ts` for six decimals in the planned magnitude range, scientific notation outside it, negative zero, real unrounded operands, `≈` equations, precision bounds, and the `0.0005` rate not displaying as zero.
+- [X] T073 [P] Write `tests/component/ControlPanelPrecision.test.tsx` before T014 to verify a fine-precision parameter shows `0.0005`, preserves existing controls and connects parameter changes to the chart; run it and observe the precision assertion fail before implementing T014.
 
 ### Implementation
 
-- [ ] T009 Define pure landscape and algorithm-adapter contracts and dimensional compatibility guard in `src/core/training/types.ts`: dimensions one or two, finite evaluation/gradient, immutable snapshots, typed non-finite results, and simultaneous per-coordinate updates without UI/state imports.
-- [ ] T010 Implement immutable run/history helpers in `src/sim/training/history.ts` and `src/sim/training/types.ts` with the exact per-branch snapshot and transition invariants in T006; preserve binary64 values, retained branches and never snap computed weights.
-- [ ] T011 Extend `src/sim/content/schema.ts` for backwards-compatible `kind: training` content and quoted constraints “finite ordered ranges, grid-aligned defaults and presets, non-negative rate” and “one or two” ordered weight parameters; preserve existing static schemas.
-- [ ] T012 Extend `src/sim/content/loader.ts` and add `src/sim/training/registry.ts` to validate adapter/landscape/chart dimension, bindings, template references, required symbol explanations, unique IDs and registered names; retain existing catalog behavior and surface field-specific errors.
-- [ ] T013 Extend `src/sim/template.ts` and `src/sim/lessonView.ts` for the planned six-decimal/scientific training formatting and selected-snapshot context, while preserving existing lesson formatting and template behavior.
-- [ ] T014 Update `src/ui/components/ControlPanel.tsx` to support the declared parameter precision rather than always one decimal; preserve existing controls and explicitly show `0.0005` correctly.
-- [ ] T015 Run the focused T005–T008 and T073 suites plus `tests/unit/content/lessons.test.ts`, `tests/unit/sim/loader.test.ts`, `tests/unit/sim/template.test.ts` and `tests/unit/sim/layerBoundaries.test.ts`; fix regressions before beginning US1.
+- [X] T009 Define pure landscape and algorithm-adapter contracts and dimensional compatibility guard in `src/core/training/types.ts`: dimensions one or two, finite evaluation/gradient, immutable snapshots, typed non-finite results, and simultaneous per-coordinate updates without UI/state imports.
+- [X] T010 Implement immutable run/history helpers in `src/sim/training/history.ts` and `src/sim/training/types.ts` with the exact per-branch snapshot and transition invariants in T006; preserve binary64 values, retained branches and never snap computed weights.
+- [X] T011 Extend `src/sim/content/schema.ts` for backwards-compatible `kind: training` content and quoted constraints “finite ordered ranges, grid-aligned defaults and presets, non-negative rate” and “one or two” ordered weight parameters; preserve existing static schemas.
+- [X] T012 Extend `src/sim/content/loader.ts` and add `src/sim/training/registry.ts` to validate adapter/landscape/chart dimension, bindings, template references, required symbol explanations, unique IDs and registered names; retain existing catalog behavior and surface field-specific errors.
+- [X] T013 Extend `src/sim/template.ts` and `src/sim/lessonView.ts` for the planned six-decimal/scientific training formatting and selected-snapshot context, while preserving existing lesson formatting and template behavior.
+- [X] T014 Update `src/ui/components/ControlPanel.tsx` to support the declared parameter precision rather than always one decimal; preserve existing controls and explicitly show `0.0005` correctly.
+- [X] T015 Run the focused T005–T008 and T073 suites plus `tests/unit/content/lessons.test.ts`, `tests/unit/sim/loader.test.ts`, `tests/unit/sim/template.test.ts` and `tests/unit/sim/layerBoundaries.test.ts`; fix regressions before beginning US1.
 
 **Checkpoint**: Valid training content can coexist with existing lessons; foundational tests pass.
 

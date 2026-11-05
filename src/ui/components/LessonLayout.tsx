@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useStore } from 'zustand'
-import type { Lesson } from '../../sim/content/schema'
+import { isTrainingLesson, type AnyLesson, type Lesson } from '../../sim/content/schema'
 import { createLessonStore } from '../../sim/lessonStore'
 import { renderLesson } from '../../sim/lessonView'
 import { ChartPanel } from './ChartPanel'
@@ -49,6 +49,7 @@ function LessonBody({ lesson }: { lesson: Lesson }) {
   )
 }
 
-export function LessonLayout({ lesson }: { lesson: Lesson }) {
+export function LessonLayout({ lesson }: { lesson: AnyLesson }) {
+  if (isTrainingLesson(lesson)) throw new Error(`Training lesson "${lesson.id}" requires a training layout`)
   return <LessonBody key={lesson.id} lesson={lesson} />
 }

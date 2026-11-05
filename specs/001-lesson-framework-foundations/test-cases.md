@@ -1,5 +1,7 @@
 # Test Case Inventory (approval gate)
 
+Status: Approved 2026-11-05 by the project owner, as written (121 cases).
+
 Principle V requires these cases to be listed and approved **before implementation**. Implementation tasks must
 write each test first and see it fail. IDs are referenced from `tasks.md`.
 

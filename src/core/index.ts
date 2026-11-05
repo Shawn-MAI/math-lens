@@ -1,0 +1,7 @@
+export { df, f } from './curves'
+export { predict } from './linear'
+export { mse, residuals, squaredErrors } from './loss'
+export { lineLoss } from './models/lineLoss'
+export { slopeOfCurve } from './models/slopeOfCurve'
+export { clamp, roundTo, snapToStep, sum } from './numeric'
+export type { Model, ModelInput, ModelOutput, Point } from './types'

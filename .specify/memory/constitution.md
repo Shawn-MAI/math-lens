@@ -1,50 +1,126 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# MathLens Constitution
+
+MathLens is an interactive website that teaches the math behind AI, machine learning and deep
+learning through visualization.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Learn by Manipulation
+Every concept MUST have at least one interactive control (slider, numeric input or toggle) that
+changes a parameter or weight and updates the visualization in real time. Updates MUST complete
+in under 100 ms. A static explanation alone is never an acceptable deliverable.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Rationale: understanding comes from seeing how the output reacts when an input changes.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Training Is Visible
+Every iterative algorithm MUST expose each training step. The user MUST be able to play, pause,
+step forward, step back, reset and change playback speed. Per-step values (parameters, loss,
+gradient and update) MUST be inspectable, and the full history MUST be retained so the user can
+scrub the timeline.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Rationale: optimization is a process; hiding the steps hides the lesson.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Math Correctness First
+All algorithms MUST live in a framework-free math core with no UI imports. Results MUST match
+reference values computed by hand or with NumPy within a stated tolerance. Visuals MUST NEVER be
+faked or hard-coded; every chart MUST be driven by real computation.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Rationale: a teaching tool that shows wrong or simulated math is worse than none.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Intuition Before Formalism
+Each lesson MUST follow this order: intuition, interactive demo, the formula, then a worked
+numeric example. Every symbol in a formula (loss, weight, bias, gradient, learning rate, etc.)
+MUST be explained. Lessons MUST use plain language and MUST NOT use unexplained jargon.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Rationale: learners retain formulas better when they already hold the intuition behind them.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Test-First Quality (NON-NEGOTIABLE)
+Test cases MUST be written and listed for approval before implementation begins. The math core
+MUST have unit tests for every function covering known values, edge cases and numerical
+stability. UI behavior MUST have component tests that verify the parameter-to-chart connection.
+
+Rationale: correctness is the product; tests define it before code can bend it.
+
+### VI. Simplicity and Separation
+The architecture MUST have exactly three layers: math core (pure functions), simulation/state
+layer (training history, playback) and presentation (charts, controls). A layer MUST NOT depend
+on any layer above it. No feature MAY be added unless a lesson needs it (YAGNI).
+
+Rationale: pure, layered code is testable, reusable and easy to reason about.
+
+### VII. Accessible and Responsive
+The site MUST work on desktop and tablet. All controls MUST be keyboard-operable. Palettes MUST
+be colour-blind-safe. Every chart MUST have a text alternative or summary.
+
+Rationale: a learning tool must be usable by every learner regardless of device or ability.
+
+### VIII. Performance Budget
+Heavy computation MUST run in a Web Worker whenever it would otherwise block the UI.
+Visualizations MUST sustain 60 fps for the datasets used in the lessons.
+
+Rationale: lag breaks the link between action and result that Principle I depends on.
+
+### IX. Branch-per-Feature Git Workflow
+Every new feature MUST have its own git branch, created automatically when `/speckit.specify`
+runs, using the installed Spec Kit git extension.
+
+- Naming: the branch name MUST match the feature folder in the form `NNN-short-kebab-name`
+  (for example `003-linear-regression-training`), where `NNN` is the next sequential feature
+  number.
+- A spec, plan, tasks file or any code MUST NEVER be created while on `main` or the default
+  branch. If `/speckit.specify`, `/speckit.plan`, `/speckit.tasks` or `/speckit.implement` is
+  started and the current branch is not the feature branch, the agent MUST stop and tell the
+  user instead of continuing.
+- If automatic branch creation fails or the working tree has uncommitted changes, the agent
+  MUST stop and tell the user instead of continuing. It MUST NOT fall back to working on `main`
+  or silently create the branch by hand.
+- Auto-commit after analysis: when `/speckit-analyze` finishes with zero CRITICAL findings, the
+  agent MUST run `/speckit-git-commit` automatically, without asking, so the analyzed spec, plan
+  and tasks are committed on the feature branch before `/speckit-implement` starts. The commit
+  message MUST describe the change (for example `docs: analyze 001-lesson-framework-foundations`).
+  The agent MUST NOT run this commit on `main` or the default branch, and MUST NOT run it when any
+  CRITICAL finding exists; in that case it MUST report the findings and leave the working tree
+  unchanged. `/speckit-analyze` itself stays read-only: only the follow-up commit writes to git.
+
+Rationale: isolated branches keep `main` stable and make each feature reviewable on its own, and
+committing each analyzed state keeps the working tree clean for the next step.
+
+## Technical Constraints
+
+- The math core MUST NOT import any UI framework, DOM API or charting library.
+- Dependencies flow downward only: presentation → simulation/state → math core.
+- Numerical tolerances used to compare against NumPy or hand-computed references MUST be stated
+  in the test that uses them.
+- Web Worker boundaries MUST pass plain serializable data so the math core stays framework-free.
+- Supported targets are current desktop and tablet browsers; phone layouts are out of scope
+  until a lesson requires them.
+
+## Development Workflow and Quality Gates
+
+- Work follows the Spec Kit sequence: specify → plan → tasks → implement, each on the feature
+  branch defined in Principle IX.
+- `/speckit-analyze` MUST be followed by an automatic `/speckit-git-commit` when it reports no
+  CRITICAL issues (Principle IX).
+- Test cases MUST be listed and approved before implementation (Principle V); tests MUST fail
+  before the code that satisfies them is written.
+- Every lesson MUST pass these gates before merge: interactive control present and under
+  100 ms (I), step-through controls for iterative algorithms (II), math-core tests green
+  (III, V), section order intuition → demo → formula → worked example (IV), keyboard and
+  colour-blind check (VII), and 60 fps check (VIII).
+- Pull requests MUST be reviewed against this constitution. Any added complexity MUST be
+  justified by a lesson that needs it (Principle VI).
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices in this repository. Amendments require a
+written proposal, a documented rationale, an update to this file with a Sync Impact Report, and
+a migration note for any existing work that no longer complies.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Versioning follows semantic versioning: MAJOR for backward-incompatible removals or
+redefinitions of principles or governance; MINOR for a new principle or section or materially
+expanded guidance; PATCH for clarifications, wording or typo fixes.
+
+Compliance MUST be checked at the plan phase (Constitution Check) and again during pull-request
+review. Violations MUST be fixed or explicitly justified in the plan's complexity tracking.
+
+**Version**: 1.1.0 | **Ratified**: 2026-11-05 | **Last Amended**: 2026-11-05

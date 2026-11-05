@@ -109,6 +109,19 @@ Record the results in the pull request.
 - One screen-reader pass through a lesson.
 - Serve `dist/` from a plain static server: deep links and refresh load the lesson at defaults.
 
+### Results (recorded during T075–T083)
+
+Run with Playwright (Chromium) against `npx vite preview` of the production build.
+
+| ID | Check | Result |
+|----|-------|--------|
+| E-01 | Layout at 1024, 1280, 1920 px, 3 lessons, light and dark | **Pass.** No horizontal scroll, nothing wider than the viewport, no overlap between chart, controls, summary and readouts. Chart 681×454 at 1024 px, 720×480 from 1280 px. |
+| E-02 | Drag performance (handle drag on slope and loss; weight slider on weight and bias) | **Pass.** Frame time p50 8.3 ms, p95 ≤ 9.0 ms (display refreshes at 120 Hz, so no dropped frames). Pointer-event handling latency p95 ≤ 4.0 ms, max 4.3 ms, far below 100 ms. Headless Chromium on one machine, so repeat on a real tablet-class device if available. |
+| E-03 | Colour-blind simulation (deuteranopia, protanopia, tritanopia, achromatopsia, both themes) | **Pass on the Loss lesson.** Line, points, handles and error markers stay distinguishable through luminance, dash style and text labels. Contrast ratios are also enforced by test D-23. Other lessons share the same palette. |
+| E-04 | Screen reader | **Partial.** The accessibility tree shows named sliders ("Steepness of the line (chart handle)"), a labelled chart image, a "Controls" group, live readouts, and a symbol table. axe-core in the browser reports 0 violations on all pages in both themes. A real screen-reader pass (VoiceOver or NVDA) is **still pending** for a human. |
+| E-05 | Static build, deep link, refresh | **Pass.** `#/lessons/weight-and-bias` opens at defaults (loss 11.250). After changing w and reloading, defaults return. An unknown lesson id shows "Lesson not found". No console errors. |
+| T083 / SC-007 | 5-learner comprehension check | **To be scheduled** with 5 learners. It is not a code task. |
+
 ## Scenario 10: Adding a lesson without touching the engine (FR-022)
 
 1. Copy `src/content/lessons/foundations/weight-and-bias/` to a new folder with a new `id`, a new `order`, and

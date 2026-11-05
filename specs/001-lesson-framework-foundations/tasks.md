@@ -243,15 +243,15 @@ alternatives for every chart. Colour is never the only carrier of information.
 
 **Purpose**: Manual checks (E-01 to E-05), final verification and documentation.
 
-- [ ] T075 [P] Run manual check E-01 (layout at 1024, 1280 and 1920 px, nothing overlaps or is cut off, SC-008) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T076 [P] Run manual check E-02 (drag a handle with the DevTools performance panel, frames stay near 60 fps, updates under 100 ms) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T077 [P] Run manual check E-03 (rendered contrast and colour-blind simulation for deuteranopia, protanopia, tritanopia, in both themes) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T078 [P] Run manual check E-04 (one screen-reader pass of a lesson: handle names, values and summary announced sensibly) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T079 Run manual check E-05 (`npm run build`, serve `dist/` from a static folder, a deep link and a refresh load the lesson at default values) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T080 Run the full gate: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build` all pass, and confirm every test ID in `test-cases.md` (A1-A5, B, BT, C, D) is covered by an existing test file (coverage map at the end of `test-cases.md`)
-- [ ] T081 [P] Confirm out-of-scope items (FR-021): no accounts, saved progress, training animation, gradient or history code, and no neural-network lesson exist in `src/` (YAGNI, Principle VI)
-- [ ] T082 [P] Add a short `README.md` at the repository root with install, `dev`, `test`, `build` commands and a link to `specs/001-lesson-framework-foundations/quickstart.md`
-- [ ] T083 SC-007 follow-up (not a code task): schedule the learner comprehension check with 5 test learners and record the outcome in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T075 [P] Run manual check E-01 (layout at 1024, 1280 and 1920 px, nothing overlaps or is cut off, SC-008) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T076 [P] Run manual check E-02 (drag a handle with the DevTools performance panel, frames stay near 60 fps, updates under 100 ms) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T077 [P] Run manual check E-03 (rendered contrast and colour-blind simulation for deuteranopia, protanopia, tritanopia, in both themes) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T078 [P] Run manual check E-04 (one screen-reader pass of a lesson: handle names, values and summary announced sensibly) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T079 Run manual check E-05 (`npm run build`, serve `dist/` from a static folder, a deep link and a refresh load the lesson at default values) and record the result in `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T080 Run the full gate: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run build` all pass, and confirm every test ID in `test-cases.md` (A1-A5, B, BT, C, D) is covered by an existing test file (coverage map at the end of `test-cases.md`)
+- [X] T081 [P] Confirm out-of-scope items (FR-021): no accounts, saved progress, training animation, gradient or history code, and no neural-network lesson exist in `src/` (YAGNI, Principle VI)
+- [X] T082 [P] Add a short `README.md` at the repository root with install, `dev`, `test`, `build` commands and a link to `specs/001-lesson-framework-foundations/quickstart.md`
+- [X] T083 SC-007 follow-up (not a code task): schedule the learner comprehension check with 5 test learners and record the outcome in `specs/001-lesson-framework-foundations/quickstart.md`
 
 ---
 
